@@ -1,0 +1,22 @@
+#include "glsl/builtin.hpp"
+
+#include "glsl/nodeId.hpp"
+
+namespace graphdev::glsl {
+
+Builtin::Builtin(TypeRegistry& typeRegistry, Function type, const std::string& name)
+    :Node(GlslNodeBuiltin, name), _function(type)
+{
+    // Todo: handle multiple function signatures in switch below
+    auto* vec3Type = typeRegistry.getType("vec3");
+    createInput("in", vec3Type);
+    createOutput("out", vec3Type);
+
+    switch(_function) {
+        case Builtin::Function::Cos:
+            _functionName = "cos";
+            break;
+    }
+}
+
+}
