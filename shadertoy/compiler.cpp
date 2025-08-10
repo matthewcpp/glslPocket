@@ -6,9 +6,7 @@
 #include "glsl/flags.hpp"
 #include "glsl/nodeId.hpp"
 #include "glsl/float.hpp"
-#include "glsl/vec2.hpp"
-#include "glsl/vec3.hpp"
-#include "glsl/vec4.hpp"
+#include "glsl/vec.hpp"
 #include "glsl/builtin.hpp"
 #include "glsl/operator.hpp"
 #include "glsl/swizzle.hpp"
@@ -72,14 +70,8 @@ void Compiler::_parseNode(const Node* node) {
         case glsl::GlslNodeId::GlslNodeFloat:
             _parseFloat(dynamic_cast<const glsl::Float*>(node));
             break;
-        case glsl::GlslNodeId::GlslNodeVec2:
-            _parseVec2(dynamic_cast<const glsl::Vec2*>(node));
-            break;
-        case glsl::GlslNodeId::GlslNodeVec3:
-            _parseVec3(dynamic_cast<const glsl::Vec3*>(node));
-            break;
-        case glsl::GlslNodeId::GlslNodeVec4:
-            _parseVec4(dynamic_cast<const glsl::Vec4*>(node));
+        case glsl::GlslNodeId::GlslNodeVec:
+            _parseVec(dynamic_cast<const glsl::Vec*>(node));
             break;
         case glsl::GlslNodeId::GlslNodeBuiltin:
             _parseBuiltin(dynamic_cast<const glsl::Builtin*>(node));
@@ -103,7 +95,7 @@ void Compiler::_parseFloat(const glsl::Float* node) {
     }
 }
 
-void Compiler::_parseVec2(const glsl::Vec2* node) {
+void Compiler::_parseVec(const glsl::Vec* node) {
     const auto* in_connection = node->inputs()[0].connection;
     const bool nodeDefinedInScope = node->flags & NodeFlags::NodeFlagDefinedInScope;
 
@@ -114,7 +106,7 @@ void Compiler::_parseVec2(const glsl::Vec2* node) {
             _nodeText[node] = node->name();
         } else { // we need to define a new variable and assign
             std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
-            _text << "vec2 " << nodeName << " = " << _nodeText[in_connection->fromNode] << std::endl;
+            _text << "vec" << node->getSize() << ' ' << nodeName << " = " << _nodeText[in_connection->fromNode] << std::endl;
             _nodeText[node] = nodeName;
         }
     } else { // this is a leaf node and we simply want to output its values
@@ -122,57 +114,15 @@ void Compiler::_parseVec2(const glsl::Vec2* node) {
             _nodeText[node] = node->name();
         } else {
             std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
-            _text << "vec2 " << nodeName << " = vec2(" << node->value()[0] << ", " << node->value()[1]  << ");" << std::endl;
-            _nodeText[node] = nodeName;
-        }
-    }
-}
+            _text << "vec" << node->getSize() << ' ' << nodeName << " = vec" << '(';
+            for (size_t i = 0; i < node->getSize(); i++) {
+                if (i > 0) {
+                    _text << ", ";
+                }
 
-void Compiler::_parseVec3(const glsl::Vec3* node) {
-    const auto* in_connection = node->inputs()[0].connection;
-    const bool nodeDefinedInScope = node->flags & NodeFlags::NodeFlagDefinedInScope;
-
-    if (in_connection) {
-        // if the node is defined in this scope then we want to assign it;
-        if (nodeDefinedInScope) {
-            _text << node->name() << " = " << _nodeText[in_connection->fromNode] << ';' << std::endl;
-            _nodeText[node] = node->name();
-        } else { // we need to define a new variable and assign
-            std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
-            _text << "vec3 " << nodeName << " = " << _nodeText[in_connection->fromNode] << std::endl;
-            _nodeText[node] = nodeName;
-        }
-    } else { // this is a leaf node and we simply want to output its values
-        if (nodeDefinedInScope) {
-            _nodeText[node] = node->name();
-        } else {
-            std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
-            _text << "vec3 " << nodeName << " = vec3(" << node->value()[0] << ", " << node->value()[1] << ", " << node->value()[2] << ");" << std::endl;
-            _nodeText[node] = nodeName;
-        }
-    }
-}
-
-void Compiler::_parseVec4(const glsl::Vec4* node) {
-    const auto* in_connection = node->inputs()[0].connection;
-    const bool nodeDefinedInScope = node->flags & NodeFlags::NodeFlagDefinedInScope;
-
-    if (in_connection) {
-        // if the node is defined in this scope then we want to assign it;
-        if (nodeDefinedInScope) {
-            _text << node->name() << " = " << _nodeText[in_connection->fromNode] << ';' << std::endl;
-            _nodeText[node] = node->name();
-        } else { // we need to define a new variable and assign
-            std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
-            _text << "vec4 " << nodeName << " = " << _nodeText[in_connection->fromNode] << std::endl;
-            _nodeText[node] = nodeName;
-        }
-    } else { // this is a leaf node and we simply want to output its values
-        if (nodeDefinedInScope) {
-            _nodeText[node] = node->name();
-        } else {
-            std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
-            _text << "vec4 " << nodeName << " = vec4(" << node->value()[0] << ", " << node->value()[1] << ", " << node->value()[2] << ", " << node->value()[3] << ");" << std::endl;
+                _text << node->getElement(i);
+            }
+            _text << ')' << std::endl;
             _nodeText[node] = nodeName;
         }
     }

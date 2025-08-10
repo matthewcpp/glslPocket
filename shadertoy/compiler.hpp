@@ -8,9 +8,7 @@
 namespace graphdev::glsl {
 
 class Float;
-class Vec2;
-class Vec3;
-class Vec4;
+class Vec;
 class Builtin;
 class Operator;
 class Swizzle;
@@ -30,9 +28,7 @@ private:
 
     void _parseNode(const Node* node);
     void _parseFloat(const glsl::Float* node);
-    void _parseVec2(const glsl::Vec2* node);
-    void _parseVec3(const glsl::Vec3* node);
-    void _parseVec4(const glsl::Vec4* node);
+    void _parseVec(const glsl::Vec* node);
 
     void _parseBuiltin(const glsl::Builtin* node);
     void _parseOperator(const glsl::Operator* node);

@@ -2,9 +2,7 @@
 #include "shadertoy/compiler.hpp"
 #include "shadertoy/shader.hpp"
 
-#include "glsl/vec2.hpp"
-#include "glsl/vec3.hpp"
-#include "glsl/vec4.hpp"
+#include "glsl/vec.hpp"
 #include "glsl/builtin.hpp"
 #include "glsl/operator.hpp"
 #include "glsl/swizzle.hpp"
@@ -21,11 +19,11 @@ int main(int argc, char** argv) {
 
     graphdev::Graph& graph = shader.mainImage->graph;
 
-    auto* colorNode = dynamic_cast<graphdev::glsl::Vec4*>(graph.createNode("glsl::vec4"));
-    colorNode->setValue({0.1f, 0.85f, 0.1f, 1.0f});
+    auto* colorNode = dynamic_cast<graphdev::glsl::Vec*>(graph.createNode("glsl::vec4"));
+    //colorNode->setValue({0.1f, 0.85f, 0.1f, 1.0f});
     auto* fragColorNode = graph.findNodeByName("fragColor");
 
-    auto* resolutionNode = dynamic_cast<graphdev::glsl::Vec3*>(graph.createNode("shadertoy::iResolution"));
+    auto* resolutionNode = dynamic_cast<graphdev::glsl::Vec*>(graph.createNode("shadertoy::iResolution"));
     auto* swizzleNode = dynamic_cast<graphdev::glsl::Swizzle*>(graph.createNode("glsl::swizzle"));
     graphdev::glsl::SwizzleEditor swizzleEditor(swizzleNode, graph);
     swizzleEditor.setMask("xy");
@@ -35,7 +33,7 @@ int main(int argc, char** argv) {
     auto* divideNode = dynamic_cast<graphdev::glsl::Operator*>(graph.createNode("glsl::divide"));
     graph.connect(fragCoordNode, 0, divideNode, static_cast<uint32_t>(graphdev::glsl::Operator::InputPortIndex::A));
     graph.connect(swizzleNode, 0, divideNode, static_cast<uint32_t>(graphdev::glsl::Operator::InputPortIndex::B));
-    auto* uvNode = dynamic_cast<graphdev::glsl::Vec2*>(graph.createNode("glsl::vec2"));
+    auto* uvNode = dynamic_cast<graphdev::glsl::Vec*>(graph.createNode("glsl::vec2"));
     graph.connect(divideNode, 0, uvNode, 0);
 
     auto cosNode = dynamic_cast<graphdev::glsl::Builtin*>(graph.createNode("glsl::cos"));

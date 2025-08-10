@@ -2,18 +2,18 @@
 
 #include "graphdev/typeRegistry.hpp"
 #include "glsl/float.hpp"
-#include "glsl/vec3.hpp"
+#include "glsl/vec.hpp"
 
 namespace graphdev::shadertoy {
 
 static Node* ShadertoyResolutionNode(TypeRegistry& typeRegistry) {
-    auto* node = new glsl::Vec3(typeRegistry, "iResolution");
+    auto* node = new glsl::Vec(typeRegistry, glsl::Vec::Type::Vec3, "iResolution");
     node->flags |= graphdev::NodeFlagDefinedInScope;
     return node;
 }
 
 static Node* ShadertoyTimeNode(TypeRegistry& typeRegistry) {
-    auto* node = new glsl::Vec3(typeRegistry, "iTime");
+    auto* node = new glsl::Float(typeRegistry, "iTime");
     node->flags |= graphdev::NodeFlagDefinedInScope;
     return node;
 }

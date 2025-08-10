@@ -4,9 +4,7 @@ set(glsl_source_files
     builtin.hpp builtin.cpp
     float.hpp float.cpp
     operator.hpp operator.cpp
-    vec2.hpp vec2.cpp
-    vec3.hpp vec3.cpp
-    vec4.hpp vec4.cpp
+    vec.hpp vec.cpp
     swizzle.hpp swizzle.cpp
     module.hpp module.cpp
 )

@@ -5,9 +5,7 @@
 #include "glsl/swizzle.hpp"
 
 #include "glsl/float.hpp"
-#include "glsl/vec2.hpp"
-#include "glsl/vec3.hpp"
-#include "glsl/vec4.hpp"
+#include "glsl/vec.hpp"
 
 namespace graphdev::glsl {
 
@@ -16,15 +14,15 @@ static Node* GlslFloatNode(TypeRegistry& typeRegistry) {
 }
 
 static Node* GlslVec2Node(TypeRegistry& typeRegistry) {
-    return new Vec2(typeRegistry, "vec2");
+    return new Vec(typeRegistry, Vec::Type::Vec2, "vec2");
 }
 
 static Node* GlslVec3Node(TypeRegistry& typeRegistry) {
-    return new Vec3(typeRegistry, "vec3");
+    return new Vec(typeRegistry, Vec::Type::Vec3, "vec3");
 }
 
 static Node* GlslVec4Node(TypeRegistry& typeRegistry) {
-    return new Vec4(typeRegistry, "vec4");
+    return new Vec(typeRegistry, Vec::Type::Vec4, "vec4");
 }
 
 static Node* GlslAddNode(TypeRegistry& typeRegistry) {
