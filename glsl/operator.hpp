@@ -19,7 +19,7 @@ public:
         Add, Subtract, Multiply, Divide
     };
 public:
-    Operator(graph::TypeRegistry& typeRegistry, Type type, const std::string& name);
+    Operator(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry, Type type, const std::string& name);
 
     Type type() const { return _type; }
     void setType(Type type) {_type = type; }

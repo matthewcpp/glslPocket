@@ -9,44 +9,44 @@
 
 namespace glsl {
 
-static graph::Node* GlslFloatNode(graph::TypeRegistry& typeRegistry) {
-    return new Float(typeRegistry, "float");
+static graph::Node* GlslFloatNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Float(uniqueId, typeRegistry, "float");
 }
 
-static graph::Node* GlslVec2Node(graph::TypeRegistry& typeRegistry) {
-    return new Vec(typeRegistry, Vec::Type::Vec2, "vec2");
+static graph::Node* GlslVec2Node(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Vec(uniqueId, typeRegistry, Vec::Type::Vec2, "vec2");
 }
 
-static graph::Node* GlslVec3Node(graph::TypeRegistry& typeRegistry) {
-    return new Vec(typeRegistry, Vec::Type::Vec3, "vec3");
+static graph::Node* GlslVec3Node(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Vec(uniqueId, typeRegistry, Vec::Type::Vec3, "vec3");
 }
 
-static graph::Node* GlslVec4Node(graph::TypeRegistry& typeRegistry) {
-    return new Vec(typeRegistry, Vec::Type::Vec4, "vec4");
+static graph::Node* GlslVec4Node(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Vec(uniqueId, typeRegistry, Vec::Type::Vec4, "vec4");
 }
 
-static graph::Node* GlslAddNode(graph::TypeRegistry& typeRegistry) {
-    return new Operator(typeRegistry, Operator::Type::Add, "Add");
+static graph::Node* GlslAddNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Operator(uniqueId, typeRegistry, Operator::Type::Add, "Add");
 }
 
-static graph::Node* GlslSubtractNode(graph::TypeRegistry& typeRegistry) {
-    return new Operator(typeRegistry, Operator::Type::Subtract, "Subtract");
+static graph::Node* GlslSubtractNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Operator(uniqueId, typeRegistry, Operator::Type::Subtract, "Subtract");
 }
 
-static graph::Node* GlslMultiplyNode(graph::TypeRegistry& typeRegistry) {
-    return new Operator(typeRegistry, Operator::Type::Multiply, "Multiply");
+static graph::Node* GlslMultiplyNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Operator(uniqueId, typeRegistry, Operator::Type::Multiply, "Multiply");
 }
 
-static graph::Node* GlslDivideNode(graph::TypeRegistry& typeRegistry) {
-    return new Operator(typeRegistry, Operator::Type::Divide, "Divide");
+static graph::Node* GlslDivideNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Operator(uniqueId, typeRegistry, Operator::Type::Divide, "Divide");
 }
 
-static graph::Node* GlslCosNode(graph::TypeRegistry& typeRegistry) {
-    return new Builtin(typeRegistry, Builtin::Function::Cos, "cos");
+static graph::Node* GlslCosNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Builtin(uniqueId, typeRegistry, Builtin::Function::Cos, "cos");
 }
 
-static graph::Node* GlslSwizzleNode(graph::TypeRegistry& typeRegistry) {
-    return new Swizzle(typeRegistry, "Swizzle");
+static graph::Node* GlslSwizzleNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    return new Swizzle(uniqueId, typeRegistry, "Swizzle");
 }
 
 }

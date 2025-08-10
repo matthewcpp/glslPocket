@@ -4,14 +4,14 @@
 
 namespace graph {
 
-EnterNode::EnterNode(TypeRegistry& typeRegistry)
-    : Node(GraphdevNodeEnter, "Enter")
+EnterNode::EnterNode(NodeUniqueId uniqueId, TypeRegistry& typeRegistry)
+    : Node(uniqueId, GraphdevNodeEnter, "Enter")
 {
 
 }
 
-Node* enterNode(TypeRegistry& typeRegistry) {
-    return new EnterNode(typeRegistry);
+Node* enterNode(NodeUniqueId uniqueId, TypeRegistry& typeRegistry) {
+    return new EnterNode(uniqueId, typeRegistry);
 }
 
 }

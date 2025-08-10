@@ -11,7 +11,7 @@ namespace glsl {
 
 class Swizzle : public graph::Node {
 public:
-    Swizzle(graph::TypeRegistry& typeRegistry, const std::string& name);
+    Swizzle(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry, const std::string& name);
 
     const std::string& mask() const { return _mask; }
 

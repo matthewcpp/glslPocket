@@ -11,7 +11,7 @@ public:
         Cos
     };
 public:
-    Builtin(graph::TypeRegistry& typeRegistry, Function type, const std::string& name);
+    Builtin(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry, Function type, const std::string& name);
 
     Function function() const { return _function; }
     const std::string& functionName() const { return _functionName; }

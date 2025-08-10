@@ -3,7 +3,7 @@
 namespace graph {
 
 Node* Graph::createNode(const std::string& nodeType) {
-    auto* node_ptr = _nodeRegistry.createNode(nodeType);
+    auto* node_ptr = _nodeRegistry.createNode(++_nextUniqueId, nodeType);
 
     if (node_ptr) {
         _nodes.emplace_back().reset(node_ptr);
@@ -13,7 +13,7 @@ Node* Graph::createNode(const std::string& nodeType) {
 }
 
 Node* Graph::createNodeForType(const std::string& typeName) {
-    auto* node_ptr = _nodeRegistry.createNodeForType(typeName);
+    auto* node_ptr = _nodeRegistry.createNodeForType(++_nextUniqueId, typeName);
 
     if (node_ptr) {
         _nodes.emplace_back().reset(node_ptr);
@@ -35,7 +35,7 @@ Connection* Graph::connect(Node* fromNode, size_t fromPortIndex, Node* toNode, s
     auto* c = connection.get();
     _connections.emplace_back(std::move(connection));
 
-    fromNode->setOutputConnection(fromPortIndex, c);
+    fromNode->addOutputConnection(fromPortIndex, c);
     toNode->setInputConnection(toPortIndex, c);
 
     return c;

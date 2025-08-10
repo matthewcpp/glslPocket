@@ -5,8 +5,8 @@
 
 namespace glsl {
 
-Swizzle::Swizzle(graph::TypeRegistry& typeRegistry, const std::string& name)
-    : Node(GlslNodeSwizzle, name), _typeRegistry(typeRegistry)
+Swizzle::Swizzle(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry, const std::string& name)
+    : Node(uniqueId, GlslNodeSwizzle, name), _typeRegistry(typeRegistry)
 {
     // configure a default value for the swizzle
     _mask = "x";

@@ -12,15 +12,15 @@ namespace graph {
 
 class NodeRegistry{
 public:
-    using CreateNodeFunc = std::function<Node*(TypeRegistry&)>;
+    using CreateNodeFunc = std::function<Node*(NodeUniqueId, TypeRegistry&)>;
 
     NodeRegistry(TypeRegistry& typeRegistry);
 
     bool registerNode(const std::string& nodeType, CreateNodeFunc nodeFunc);
     bool registerNodeWithType(const std::string& nodeType, const std::string typeName, CreateNodeFunc nodeFunc);
 
-    Node* createNode(const std::string& nodeType);
-    Node* createNodeForType(const std::string& typeName);
+    Node* createNode(NodeUniqueId uniqueId, const std::string& nodeType);
+    Node* createNodeForType(NodeUniqueId uniqueId, const std::string& typeName);
 
 private:
     TypeRegistry& _typeRegistry;

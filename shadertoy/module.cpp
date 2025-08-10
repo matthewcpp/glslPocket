@@ -6,14 +6,14 @@
 
 namespace shadertoy {
 
-static graph::Node* ShadertoyResolutionNode(graph::TypeRegistry& typeRegistry) {
-    auto* node = new glsl::Vec(typeRegistry, glsl::Vec::Type::Vec3, "iResolution");
+static graph::Node* ShadertoyResolutionNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    auto* node = new glsl::Vec(uniqueId, typeRegistry, glsl::Vec::Type::Vec3, "iResolution");
     node->flags |= graph::NodeFlagDefinedInScope;
     return node;
 }
 
-static graph::Node* ShadertoyTimeNode(graph::TypeRegistry& typeRegistry) {
-    auto* node = new glsl::Float(typeRegistry, "iTime");
+static graph::Node* ShadertoyTimeNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
+    auto* node = new glsl::Float(uniqueId, typeRegistry, "iTime");
     node->flags |= graph::NodeFlagDefinedInScope;
     return node;
 }

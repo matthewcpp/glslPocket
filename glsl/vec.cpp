@@ -3,8 +3,8 @@
 
 namespace glsl {
 
-Vec::Vec(graph::TypeRegistry& typeRegistry, Type vecType, const std::string& name) 
-    : Node(GlslNodeVec, name), _vecType(vecType)
+Vec::Vec(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry, Type vecType, const std::string& name) 
+    : Node(uniqueId, GlslNodeVec, name), _vecType(vecType)
 {
     auto* vec2Type = [this, &typeRegistry]() -> const graph::Type* {
         switch (getVecType()) {

@@ -12,7 +12,7 @@ public:
     enum class Type {
         Vec2, Vec3, Vec4
     };
-    Vec(graph::TypeRegistry& typeRegistry, Type vecType, const std::string& name);
+    Vec(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry, Type vecType, const std::string& name);
 
     Type getVecType() const { return _vecType; }
     size_t getSize() const { return static_cast<size_t>(_vecType); }

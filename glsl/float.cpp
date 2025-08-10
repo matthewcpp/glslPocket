@@ -4,8 +4,8 @@
 
 namespace glsl {
 
-Float::Float(graph::TypeRegistry& typeRegistry, const std::string& name)
-    : Node(GlslNodeFloat, name)
+Float::Float(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry, const std::string& name)
+    : Node(uniqueId, GlslNodeFloat, name)
     {
         auto* floatType = typeRegistry.getType("float");
 

@@ -34,16 +34,16 @@ bool NodeRegistry::registerNodeWithType(const std::string& nodeType, const std::
     return true;
 }
 
-Node* NodeRegistry::createNode(const std::string& nodeType) {
+Node* NodeRegistry::createNode(NodeUniqueId uniqueId, const std::string& nodeType) {
     auto result = _nodeFuncs.find(nodeType);
 
-    return result != _nodeFuncs.end() ? result->second(_typeRegistry) : nullptr;
+    return result != _nodeFuncs.end() ? result->second(uniqueId, _typeRegistry) : nullptr;
 }
 
-Node* NodeRegistry::createNodeForType(const std::string& typeName) {
+Node* NodeRegistry::createNodeForType(NodeUniqueId uniqueId, const std::string& typeName) {
     auto result = _typeNodeFuncs.find(typeName);
 
-    return result != _nodeFuncs.end() ? result->second(_typeRegistry) : nullptr;
+    return result != _nodeFuncs.end() ? result->second(uniqueId, _typeRegistry) : nullptr;
 }
 
 }

@@ -26,6 +26,7 @@ private:
     std::vector<std::unique_ptr<Connection>> _connections;
 
     NodeRegistry& _nodeRegistry;
+    NodeUniqueId _nextUniqueId = 0;
 };
 
 }

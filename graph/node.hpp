@@ -7,6 +7,13 @@
 
 namespace graph {
 
+/** A unique identifer for this node in it's graph. */
+typedef uint32_t NodeUniqueId;
+
+/** Identifier for the type of node.  
+ *  Note this is different than the types of node connections, e.g scalar or vector. */
+typedef uint32_t NodeTypeId;
+
 enum NodeFlags {
     NodeFlagNone = 0,
 
@@ -17,30 +24,41 @@ enum NodeFlags {
 
 class Node {
 public:
-    struct Port {
-        Port() = default;
-        Port(const std::string& name, const Type* type) : name(name), type(type) {}
+    struct InputPort {
+        InputPort() = default;
+        InputPort(const std::string& name, const Type* type) : name(name), type(type) {}
 
         std::string name;
         const Type* type;
         const Connection* connection = nullptr;
     };
 
+    struct OutputPort {
+        OutputPort() = default;
+        OutputPort(const std::string& name, const Type* type) : name(name), type(type) {}
+
+        std::string name;
+        const Type* type;
+        std::vector<const Connection*> connections;
+    };
+
 public:
-    Node(uint32_t type_id, const std::string& name): _name(name), _type_id(type_id) {}
+    Node(NodeUniqueId uniqueId, NodeTypeId typeId, const std::string& name)
+        : _uniqueId(uniqueId), _typeId(typeId), _name(name) {}
     virtual ~Node() = default;
 
-    inline const uint32_t typeId() const { return _type_id; }
+    inline const NodeUniqueId uniqueId() const {return _uniqueId; }
+    inline const NodeTypeId typeId() const { return _typeId; }
     inline const std::string& name() const { return _name; }
-    const std::vector<Port>& outputs() const { return _outputs; }
-    const std::vector<Port>& inputs() const { return _inputs; }
+    const std::vector<InputPort>& inputs() const { return _inputs; }
+    const std::vector<OutputPort>& outputs() const { return _outputs; }
 
     virtual void setInputConnection(size_t index, const Connection* connection) {
         _inputs[index].connection = connection;
     }
 
-    virtual void setOutputConnection(size_t index, const Connection* connection) {
-        _outputs[index].connection = connection;
+    virtual void addOutputConnection(size_t index, const Connection* connection) {
+        _outputs[index].connections.push_back(connection);
     }
 
     virtual void setName(const std::string& name) {
@@ -68,10 +86,11 @@ protected:
     }
 
 protected:
-    uint32_t _type_id;
+    NodeUniqueId _uniqueId;
+    NodeTypeId _typeId;
     std::string _name;
-    std::vector<Port> _inputs;
-    std::vector<Port> _outputs;
+    std::vector<InputPort> _inputs;
+    std::vector<OutputPort> _outputs;
 };
 
 }

@@ -7,11 +7,11 @@ namespace graph {
 
 class EnterNode : public Node {
 public:
-    EnterNode(TypeRegistry& typeRegistry);
+    EnterNode(NodeUniqueId uniqueId, TypeRegistry& typeRegistry);
     Node* targetNode = nullptr;
 
 };
 
-Node* enterNode(TypeRegistry& typeRegistry);
+Node* enterNode(NodeUniqueId uniqueId, TypeRegistry& typeRegistry);
 
 }
