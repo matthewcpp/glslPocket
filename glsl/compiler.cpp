@@ -93,10 +93,11 @@ void Compiler::_parseNode(const graph::Node* node) {
 void Compiler::_parseFloat(const glsl::Float* node) {
     const auto* connection = node->inputs()[0].connection;
 
-    if (connection) {
+    if (connection) { //declare variable?
         _nodeText[node] = _nodeText[connection->fromNode];
     } else {
-        _nodeText[node] = std::to_string(node->value());
+
+        _nodeText[node] = std::to_string(std::get<float>(node->properties()[0].value));
     }
 }
 
@@ -119,15 +120,16 @@ void Compiler::_parseVec(const glsl::Vec* node) {
             _nodeText[node] = node->name();
         } else {
             std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
-            _text << "vec" << node->getSize() << ' ' << nodeName << " = vec" << '(';
-            for (size_t i = 0; i < node->getSize(); i++) {
+            _text << "vec" << node->getSize() << ' ' << nodeName << " = vec" << node->getSize() << '(';
+            for (size_t i = 0; i < node->properties().size(); i++) {
+                const auto& property = node->properties()[i];
                 if (i > 0) {
                     _text << ", ";
                 }
 
-                _text << node->getElement(i);
+                _text << std::get<float>(property.value);
             }
-            _text << ')' << std::endl;
+            _text << ");" << std::endl;
             _nodeText[node] = nodeName;
         }
     }

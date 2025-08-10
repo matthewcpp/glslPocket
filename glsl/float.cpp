@@ -9,6 +9,8 @@ Float::Float(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry, co
     {
         auto* floatType = typeRegistry.getType("float");
 
+        _properties.emplace_back("value", 0.0f);
+
         createInput("in", floatType);
         createOutput("out", floatType);
     }

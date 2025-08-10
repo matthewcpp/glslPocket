@@ -42,6 +42,17 @@ public:
         std::vector<const Connection*> connections;
     };
 
+    struct Property {
+        using ValueType = std::variant<float>;
+
+        Property() = default;
+        Property(const std::string& name, const ValueType& value)
+            : name(name), value(value) {};
+
+        std::string name;
+        ValueType value;
+    };
+
 public:
     Node(NodeUniqueId uniqueId, NodeTypeId typeId, const std::string& name)
         : _uniqueId(uniqueId), _typeId(typeId), _name(name) {}
@@ -52,6 +63,7 @@ public:
     inline const std::string& name() const { return _name; }
     const std::vector<InputPort>& inputs() const { return _inputs; }
     const std::vector<OutputPort>& outputs() const { return _outputs; }
+    const std::vector<Property>& properties() const { return _properties; }
 
     virtual void setInputConnection(size_t index, const Connection* connection) {
         _inputs[index].connection = connection;
@@ -63,6 +75,25 @@ public:
 
     virtual void setName(const std::string& name) {
         _name = name;
+    }
+
+    virtual bool setProperty(const std::string& name, Property::ValueType value) {
+        auto result = std::find_if(_properties.begin(), _properties.end(), [&name](const Property& p) {
+            return p.name == name;
+        });
+
+        if (result == _properties.end()) {
+            return false;
+        }
+
+        auto& p = *result;
+        if (p.value.index() != value.index()) {
+            return false;
+        }
+
+        p.value = value;
+
+        return true;
     }
 
     bool hasInputs() const {
@@ -91,6 +122,7 @@ protected:
     std::string _name;
     std::vector<InputPort> _inputs;
     std::vector<OutputPort> _outputs;
+    std::vector<Property> _properties;
 };
 
 }

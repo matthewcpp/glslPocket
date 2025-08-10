@@ -21,8 +21,15 @@ int main(int argc, char** argv) {
     graph::Graph& graph = shader.mainImage->graph;
 
     auto* colorNode = dynamic_cast<glsl::Vec*>(graph.createNode("glsl::vec4"));
-    //colorNode->setValue({0.1f, 0.85f, 0.1f, 1.0f});
+    colorNode->setProperty("x", 0.1f);
+    colorNode->setProperty("y", 0.85f);
+    colorNode->setProperty("z", 0.1f);
+    colorNode->setProperty("w", 1.0f);
     auto* fragColorNode = graph.findNodeByName("fragColor");
+    graph.connect(colorNode, 0, fragColorNode, 0);
+    std::cout << shader.compile() << std::endl;
+
+    return 0;
 
     auto* resolutionNode = dynamic_cast<glsl::Vec*>(graph.createNode("shadertoy::iResolution"));
     auto* swizzleNode = dynamic_cast<glsl::Swizzle*>(graph.createNode("glsl::swizzle"));
