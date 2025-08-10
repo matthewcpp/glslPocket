@@ -1,6 +1,6 @@
 #pragma once
 
-namespace graphdev {
+namespace graph {
 
 enum GraphdevNodeId {
     GraphdevNodeEnter = 0

@@ -6,7 +6,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace graphdev {
+namespace graph {
 
 class TypeRegistry {
 public:

@@ -2,9 +2,9 @@
 
 #include "glsl/nodeId.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-Operator::Operator(TypeRegistry& typeRegistry, Type type, const std::string& name)
+Operator::Operator(graph::TypeRegistry& typeRegistry, Type type, const std::string& name)
     :Node(GlslNodeOperator, name), _type(type)
 {
     auto* vec3Type = typeRegistry.getType("vec3");

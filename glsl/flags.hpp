@@ -1,6 +1,6 @@
 #pragma once
 
-namespace graphdev::glsl {
+namespace glsl {
     
 enum GlslFunctionParameterFlags {
     GlslFunctionParameterFlagNone,

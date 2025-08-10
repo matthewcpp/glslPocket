@@ -2,9 +2,9 @@
 
 #include "glsl/nodeId.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-Builtin::Builtin(TypeRegistry& typeRegistry, Function type, const std::string& name)
+Builtin::Builtin(graph::TypeRegistry& typeRegistry, Function type, const std::string& name)
     :Node(GlslNodeBuiltin, name), _function(type)
 {
     // Todo: handle multiple function signatures in switch below

@@ -5,14 +5,14 @@
 
 #include <array>
 
-namespace graphdev::glsl {
+namespace glsl {
 
-class Vec : public Node {
+class Vec : public graph::Node {
 public:
     enum class Type {
         Vec2, Vec3, Vec4
     };
-    Vec(TypeRegistry& typeRegistry, Type vecType, const std::string& name);
+    Vec(graph::TypeRegistry& typeRegistry, Type vecType, const std::string& name);
 
     Type getVecType() const { return _vecType; }
     size_t getSize() const { return static_cast<size_t>(_vecType); }

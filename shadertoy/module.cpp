@@ -4,25 +4,25 @@
 #include "glsl/float.hpp"
 #include "glsl/vec.hpp"
 
-namespace graphdev::shadertoy {
+namespace shadertoy {
 
-static Node* ShadertoyResolutionNode(TypeRegistry& typeRegistry) {
+static graph::Node* ShadertoyResolutionNode(graph::TypeRegistry& typeRegistry) {
     auto* node = new glsl::Vec(typeRegistry, glsl::Vec::Type::Vec3, "iResolution");
-    node->flags |= graphdev::NodeFlagDefinedInScope;
+    node->flags |= graph::NodeFlagDefinedInScope;
     return node;
 }
 
-static Node* ShadertoyTimeNode(TypeRegistry& typeRegistry) {
+static graph::Node* ShadertoyTimeNode(graph::TypeRegistry& typeRegistry) {
     auto* node = new glsl::Float(typeRegistry, "iTime");
-    node->flags |= graphdev::NodeFlagDefinedInScope;
+    node->flags |= graph::NodeFlagDefinedInScope;
     return node;
 }
 
 }
 
-void shadertoyModuleInit(graphdev::TypeRegistry& typeRegistry, graphdev::NodeRegistry& nodeRegistry)
+void shadertoyModuleInit(graph::TypeRegistry& typeRegistry, graph::NodeRegistry& nodeRegistry)
 {
-    using namespace graphdev::shadertoy;
+    using namespace shadertoy;
     nodeRegistry.registerNode("shadertoy::iResolution", ShadertoyResolutionNode);
     nodeRegistry.registerNode("shadertoy::iTime", ShadertoyTimeNode);
 }

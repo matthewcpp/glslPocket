@@ -3,7 +3,7 @@
 #include "graph/node.hpp"
 #include "graph/typeRegistry.hpp"
 
-namespace graphdev {
+namespace graph {
 
 class EnterNode : public Node {
 public:

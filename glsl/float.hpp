@@ -3,11 +3,11 @@
 #include "graph/node.hpp"
 #include "graph/typeRegistry.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-class Float : public Node {
+class Float : public graph::Node {
 public:
-    Float(TypeRegistry& typeRegistry, const std::string& name);
+    Float(graph::TypeRegistry& typeRegistry, const std::string& name);
 
     float value() const { return _value; }
     void setValue(float value) {_value = value; }

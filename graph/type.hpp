@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace graphdev {
+namespace graph {
 
 class Type {
 public:

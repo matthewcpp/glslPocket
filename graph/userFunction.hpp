@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace graphdev {
+namespace graph {
 
 class UserFunction {
 public:

@@ -3,9 +3,9 @@
 #include "glsl/nodeId.hpp"
 #include "graph/graph.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-Swizzle::Swizzle(TypeRegistry& typeRegistry, const std::string& name)
+Swizzle::Swizzle(graph::TypeRegistry& typeRegistry, const std::string& name)
     : Node(GlslNodeSwizzle, name), _typeRegistry(typeRegistry)
 {
     // configure a default value for the swizzle

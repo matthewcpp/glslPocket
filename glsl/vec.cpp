@@ -1,12 +1,12 @@
 #include "glsl/vec.hpp"
 #include "glsl/nodeId.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-Vec::Vec(TypeRegistry& typeRegistry, Type vecType, const std::string& name) 
+Vec::Vec(graph::TypeRegistry& typeRegistry, Type vecType, const std::string& name) 
     : Node(GlslNodeVec, name), _vecType(vecType)
 {
-    auto* vec2Type = [this, &typeRegistry]() -> const graphdev::Type* {
+    auto* vec2Type = [this, &typeRegistry]() -> const graph::Type* {
         switch (getVecType()) {
             case Type::Vec2:
                 return typeRegistry.getType("vec2");

@@ -3,4 +3,4 @@
 #include "graph/nodeRegistry.hpp"
 #include "graph/typeRegistry.hpp"
 
-void glslModuleInit(graphdev::TypeRegistry& typeRegistry, graphdev::NodeRegistry& nodeRegistry);
+void glslModuleInit(graph::TypeRegistry& typeRegistry, graph::NodeRegistry& nodeRegistry);

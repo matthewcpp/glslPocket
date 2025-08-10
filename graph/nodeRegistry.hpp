@@ -8,7 +8,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace graphdev {
+namespace graph {
 
 class NodeRegistry{
 public:

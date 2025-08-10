@@ -1,6 +1,6 @@
 #include "typeRegistry.hpp"
 
-namespace graphdev {
+namespace graph {
 
 TypeRegistry::TypeRegistry(){
     registerType("any");

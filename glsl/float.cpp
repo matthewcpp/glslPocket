@@ -2,9 +2,9 @@
 
 #include "glsl/nodeId.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-Float::Float(TypeRegistry& typeRegistry, const std::string& name)
+Float::Float(graph::TypeRegistry& typeRegistry, const std::string& name)
     : Node(GlslNodeFloat, name)
     {
         auto* floatType = typeRegistry.getType("float");

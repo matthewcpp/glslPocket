@@ -1,6 +1,6 @@
 #include "graph/userFunction.hpp"
 
-namespace graphdev {
+namespace graph {
 
 bool UserFunction::initializeGraph() {
     for (const auto& param : parameters) {

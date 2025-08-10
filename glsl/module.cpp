@@ -7,52 +7,52 @@
 #include "glsl/float.hpp"
 #include "glsl/vec.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-static Node* GlslFloatNode(TypeRegistry& typeRegistry) {
+static graph::Node* GlslFloatNode(graph::TypeRegistry& typeRegistry) {
     return new Float(typeRegistry, "float");
 }
 
-static Node* GlslVec2Node(TypeRegistry& typeRegistry) {
+static graph::Node* GlslVec2Node(graph::TypeRegistry& typeRegistry) {
     return new Vec(typeRegistry, Vec::Type::Vec2, "vec2");
 }
 
-static Node* GlslVec3Node(TypeRegistry& typeRegistry) {
+static graph::Node* GlslVec3Node(graph::TypeRegistry& typeRegistry) {
     return new Vec(typeRegistry, Vec::Type::Vec3, "vec3");
 }
 
-static Node* GlslVec4Node(TypeRegistry& typeRegistry) {
+static graph::Node* GlslVec4Node(graph::TypeRegistry& typeRegistry) {
     return new Vec(typeRegistry, Vec::Type::Vec4, "vec4");
 }
 
-static Node* GlslAddNode(TypeRegistry& typeRegistry) {
+static graph::Node* GlslAddNode(graph::TypeRegistry& typeRegistry) {
     return new Operator(typeRegistry, Operator::Type::Add, "Add");
 }
 
-static Node* GlslSubtractNode(TypeRegistry& typeRegistry) {
+static graph::Node* GlslSubtractNode(graph::TypeRegistry& typeRegistry) {
     return new Operator(typeRegistry, Operator::Type::Subtract, "Subtract");
 }
 
-static Node* GlslMultiplyNode(TypeRegistry& typeRegistry) {
+static graph::Node* GlslMultiplyNode(graph::TypeRegistry& typeRegistry) {
     return new Operator(typeRegistry, Operator::Type::Multiply, "Multiply");
 }
 
-static Node* GlslDivideNode(TypeRegistry& typeRegistry) {
+static graph::Node* GlslDivideNode(graph::TypeRegistry& typeRegistry) {
     return new Operator(typeRegistry, Operator::Type::Divide, "Divide");
 }
 
-static Node* GlslCosNode(TypeRegistry& typeRegistry) {
+static graph::Node* GlslCosNode(graph::TypeRegistry& typeRegistry) {
     return new Builtin(typeRegistry, Builtin::Function::Cos, "cos");
 }
 
-static Node* GlslSwizzleNode(TypeRegistry& typeRegistry) {
+static graph::Node* GlslSwizzleNode(graph::TypeRegistry& typeRegistry) {
     return new Swizzle(typeRegistry, "Swizzle");
 }
 
 }
 
-void glslModuleInit(graphdev::TypeRegistry& typeRegistry, graphdev::NodeRegistry& nodeRegistry) {
-    using namespace graphdev::glsl;
+void glslModuleInit(graph::TypeRegistry& typeRegistry, graph::NodeRegistry& nodeRegistry) {
+    using namespace glsl;
     nodeRegistry.registerNode("glsl::swizzle", GlslSwizzleNode);
     nodeRegistry.registerNode("glsl::add", GlslAddNode);
     nodeRegistry.registerNode("glsl::multiply", GlslMultiplyNode);

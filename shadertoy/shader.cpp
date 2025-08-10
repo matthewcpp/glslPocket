@@ -5,7 +5,7 @@
 #include "glsl/module.hpp"
 #include "shadertoy/module.hpp"
 
-namespace graphdev::shadertoy {
+namespace shadertoy {
 
 
 Shader::Shader () 

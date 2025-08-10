@@ -1,6 +1,6 @@
 #include "graph/program.hpp"
 
-namespace graphdev {
+namespace graph {
 
 UserFunction* Program::createUserFunction(const std::string& name) {
     if (_userFunctions.count(name)) {

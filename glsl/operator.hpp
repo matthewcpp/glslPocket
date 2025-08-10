@@ -3,9 +3,9 @@
 #include "graph/node.hpp"
 #include "graph/typeRegistry.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-class Operator : public Node {
+class Operator : public graph::Node {
 public:
     enum class OutputPortIndex {
         Out
@@ -19,7 +19,7 @@ public:
         Add, Subtract, Multiply, Divide
     };
 public:
-    Operator(TypeRegistry& typeRegistry, Type type, const std::string& name);
+    Operator(graph::TypeRegistry& typeRegistry, Type type, const std::string& name);
 
     Type type() const { return _type; }
     void setType(Type type) {_type = type; }

@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-namespace graphdev {
+namespace graph {
 
 class Node;
 

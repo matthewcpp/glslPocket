@@ -4,7 +4,7 @@
 #include "graph/program.hpp"
 #include "graph/typeRegistry.hpp"
 
-namespace graphdev::shadertoy {
+namespace shadertoy {
 
 class Shader {
 public:
@@ -12,12 +12,12 @@ public:
 
     std::string compile();
 private:
-    TypeRegistry _typeRegistry;
-    NodeRegistry _nodeRegistry;
+    graph::TypeRegistry _typeRegistry;
+    graph::NodeRegistry _nodeRegistry;
 
 public:
-    graphdev::Program program;
-    UserFunction* mainImage;
+    graph::Program program;
+    graph::UserFunction* mainImage;
 };
 
 }

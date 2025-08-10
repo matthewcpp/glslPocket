@@ -11,9 +11,9 @@
 #include "glsl/operator.hpp"
 #include "glsl/swizzle.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-std::string Compiler::compile(const Program& program, const std::string& entryPoint) {
+std::string Compiler::compile(const graph::Program& program, const std::string& entryPoint) {
     _identifier_counter = 0;
     _nodeText.clear();
 
@@ -27,7 +27,7 @@ std::string Compiler::compile(const Program& program, const std::string& entryPo
     return _text.str();
 }
 
-void Compiler::_parseUserFunc(const UserFunction* func) {
+void Compiler::_parseUserFunc(const graph::UserFunction* func) {
     _text << (func->returnType ? func->returnType->name() : "void");
     _text << ' ' << func->name << '(';
 
@@ -61,7 +61,7 @@ void Compiler::_parseUserFunc(const UserFunction* func) {
     _text << "}";
 }
 
-void Compiler::_parseNode(const Node* node) {
+void Compiler::_parseNode(const graph::Node* node) {
     for (const auto& input : node->inputs()) {
         if (input.connection) {
             _parseNode(input.connection->fromNode);
@@ -69,8 +69,8 @@ void Compiler::_parseNode(const Node* node) {
     }
 
     switch (node->typeId()) {
-        case graphdev::GraphdevNodeId::GraphdevNodeEnter:
-            _parseNode(dynamic_cast<const graphdev::EnterNode*>(node)->targetNode);
+        case graph::GraphdevNodeId::GraphdevNodeEnter:
+            _parseNode(dynamic_cast<const graph::EnterNode*>(node)->targetNode);
             break;
         case glsl::GlslNodeId::GlslNodeFloat:
             _parseFloat(dynamic_cast<const glsl::Float*>(node));
@@ -102,7 +102,7 @@ void Compiler::_parseFloat(const glsl::Float* node) {
 
 void Compiler::_parseVec(const glsl::Vec* node) {
     const auto* in_connection = node->inputs()[0].connection;
-    const bool nodeDefinedInScope = node->flags & NodeFlags::NodeFlagDefinedInScope;
+    const bool nodeDefinedInScope = node->flags & graph::NodeFlags::NodeFlagDefinedInScope;
 
     if (in_connection) {
         // if the node is defined in this scope then we want to assign it;

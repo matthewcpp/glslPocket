@@ -2,7 +2,7 @@
 
 #include "graph/enterNode.hpp"
 
-namespace graphdev {
+namespace graph {
 
 NodeRegistry::NodeRegistry(TypeRegistry& typeRegistry) 
     : _typeRegistry(typeRegistry) 

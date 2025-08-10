@@ -2,7 +2,7 @@
 
 #include "graph/nodeId.hpp"
 
-namespace graphdev {
+namespace graph {
 
 EnterNode::EnterNode(TypeRegistry& typeRegistry)
     : Node(GraphdevNodeEnter, "Enter")

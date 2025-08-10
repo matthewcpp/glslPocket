@@ -5,7 +5,7 @@
 
 #include <vector>
 
-namespace graphdev {
+namespace graph {
 
 enum NodeFlags {
     NodeFlagNone = 0,

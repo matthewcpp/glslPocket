@@ -3,15 +3,15 @@
 #include "graph/node.hpp"
 #include "graph/typeRegistry.hpp"
 
-namespace graphdev::glsl {
+namespace glsl {
 
-class Builtin : public Node {
+class Builtin : public graph::Node {
 public:
     enum class Function {
         Cos
     };
 public:
-    Builtin(TypeRegistry& typeRegistry, Function type, const std::string& name);
+    Builtin(graph::TypeRegistry& typeRegistry, Function type, const std::string& name);
 
     Function function() const { return _function; }
     const std::string& functionName() const { return _functionName; }

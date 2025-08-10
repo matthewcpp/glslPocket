@@ -3,15 +3,15 @@
 #include "graph/node.hpp"
 #include "graph/typeRegistry.hpp"
 
-namespace graphdev {
+namespace graph {
 class Graph;
 }
 
-namespace graphdev::glsl {
+namespace glsl {
 
-class Swizzle : public Node {
+class Swizzle : public graph::Node {
 public:
-    Swizzle(TypeRegistry& typeRegistry, const std::string& name);
+    Swizzle(graph::TypeRegistry& typeRegistry, const std::string& name);
 
     const std::string& mask() const { return _mask; }
 
@@ -21,14 +21,14 @@ private:
 
 private:
     std::string _mask;
-    TypeRegistry& _typeRegistry;
+    graph::TypeRegistry& _typeRegistry;
 
     friend class SwizzleEditor;
 };
 
 class SwizzleEditor {
 public:
-    SwizzleEditor(Swizzle* swizzle, graphdev::Graph& graph)
+    SwizzleEditor(Swizzle* swizzle, graph::Graph& graph)
         : _swizzle(swizzle), _graph(graph) {}
 
     bool setMask(const std::string& mask);
@@ -37,7 +37,7 @@ public:
 
 private:
     Swizzle* _swizzle;
-    graphdev::Graph& _graph;
+    graph::Graph& _graph;
     std::string _errorString;
 };
 

@@ -7,7 +7,7 @@
 #include <memory>
 #include <vector>
 
-namespace graphdev {
+namespace graph {
 
 class Graph{
 public:

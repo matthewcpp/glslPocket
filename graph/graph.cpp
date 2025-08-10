@@ -1,6 +1,6 @@
 #include "graph.hpp"
 
-namespace graphdev {
+namespace graph {
 
 Node* Graph::createNode(const std::string& nodeType) {
     auto* node_ptr = _nodeRegistry.createNode(nodeType);
