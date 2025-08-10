@@ -1,7 +1,7 @@
 #include "glsl/compiler.hpp"
 
-#include "graphdev/nodeId.hpp"
-#include "graphdev/enterNode.hpp"
+#include "graph/nodeId.hpp"
+#include "graph/enterNode.hpp"
 
 #include "glsl/flags.hpp"
 #include "glsl/nodeId.hpp"

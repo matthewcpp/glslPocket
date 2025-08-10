@@ -1,7 +1,7 @@
 #pragma once
 
-#include "graphdev/connection.hpp"
-#include "graphdev/type.hpp"
+#include "graph/connection.hpp"
+#include "graph/type.hpp"
 
 #include <vector>
 

@@ -4,5 +4,5 @@ set(shadertoy_source_files
 )
 
 add_library(shadertoy STATIC ${shadertoy_source_files})
-target_link_libraries(shadertoy PUBLIC graphdev glsl)
+target_link_libraries(shadertoy PUBLIC glsl)
 set_target_properties(shadertoy PROPERTIES CXX_STANDARD 17)

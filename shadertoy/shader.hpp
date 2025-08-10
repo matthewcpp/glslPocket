@@ -1,8 +1,8 @@
 #pragma once
 
-#include "graphdev/nodeRegistry.hpp"
-#include "graphdev/program.hpp"
-#include "graphdev/typeRegistry.hpp"
+#include "graph/nodeRegistry.hpp"
+#include "graph/program.hpp"
+#include "graph/typeRegistry.hpp"
 
 namespace graphdev::shadertoy {
 

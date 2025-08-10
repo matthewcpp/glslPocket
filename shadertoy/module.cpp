@@ -1,6 +1,6 @@
 #include "shadertoy/module.hpp"
 
-#include "graphdev/typeRegistry.hpp"
+#include "graph/typeRegistry.hpp"
 #include "glsl/float.hpp"
 #include "glsl/vec.hpp"
 
@@ -20,7 +20,7 @@ static Node* ShadertoyTimeNode(TypeRegistry& typeRegistry) {
 
 }
 
-void shadertoy_module(graphdev::TypeRegistry& typeRegistry, graphdev::NodeRegistry& nodeRegistry)
+void shadertoyModuleInit(graphdev::TypeRegistry& typeRegistry, graphdev::NodeRegistry& nodeRegistry)
 {
     using namespace graphdev::shadertoy;
     nodeRegistry.registerNode("shadertoy::iResolution", ShadertoyResolutionNode);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphdev/nodeRegistry.hpp"
-#include "graphdev/typeRegistry.hpp"
+#include "graph/nodeRegistry.hpp"
+#include "graph/typeRegistry.hpp"
 
-void glsl_module(graphdev::TypeRegistry& typeRegistry, graphdev::NodeRegistry& nodeRegistry);
+void glslModuleInit(graphdev::TypeRegistry& typeRegistry, graphdev::NodeRegistry& nodeRegistry);

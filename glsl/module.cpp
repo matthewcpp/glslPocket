@@ -51,7 +51,7 @@ static Node* GlslSwizzleNode(TypeRegistry& typeRegistry) {
 
 }
 
-void glsl_module(graphdev::TypeRegistry& typeRegistry, graphdev::NodeRegistry& nodeRegistry) {
+void glslModuleInit(graphdev::TypeRegistry& typeRegistry, graphdev::NodeRegistry& nodeRegistry) {
     using namespace graphdev::glsl;
     nodeRegistry.registerNode("glsl::swizzle", GlslSwizzleNode);
     nodeRegistry.registerNode("glsl::add", GlslAddNode);

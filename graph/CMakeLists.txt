@@ -10,6 +10,6 @@ set(graphdev_source_files
     type.hpp
 )
 
-add_library(graphdev STATIC ${graphdev_source_files})
-target_include_directories(graphdev PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
-set_target_properties(graphdev PROPERTIES CXX_STANDARD 17)
+add_library(graph STATIC ${graphdev_source_files})
+target_include_directories(graph PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
+set_target_properties(graph PROPERTIES CXX_STANDARD 17)

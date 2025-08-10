@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphdev/program.hpp"
+#include "graph/program.hpp"
 
 #include <string>
 #include <sstream>

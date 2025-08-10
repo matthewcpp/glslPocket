@@ -1,6 +1,6 @@
-#include "graphdev/enterNode.hpp"
+#include "graph/enterNode.hpp"
 
-#include "graphdev/nodeId.hpp"
+#include "graph/nodeId.hpp"
 
 namespace graphdev {
 

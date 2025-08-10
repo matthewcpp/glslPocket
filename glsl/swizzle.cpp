@@ -1,7 +1,7 @@
 #include "glsl/swizzle.hpp"
 
 #include "glsl/nodeId.hpp"
-#include "graphdev/graph.hpp"
+#include "graph/graph.hpp"
 
 namespace graphdev::glsl {
 

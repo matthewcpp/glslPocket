@@ -1,8 +1,8 @@
 #pragma once
 
-#include "graphdev/node.hpp"
+#include "graph/node.hpp"
 
-#include "graphdev/typeRegistry.hpp"
+#include "graph/typeRegistry.hpp"
 
 #include <functional>
 #include <string>

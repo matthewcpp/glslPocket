@@ -1,7 +1,7 @@
 #pragma once
 
-#include "graphdev/node.hpp"
-#include "graphdev/typeRegistry.hpp"
+#include "graph/node.hpp"
+#include "graph/typeRegistry.hpp"
 
 namespace graphdev::glsl {
 
