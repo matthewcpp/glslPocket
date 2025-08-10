@@ -1,4 +1,4 @@
-#include "shadertoy/compiler.hpp"
+#include "glsl/compiler.hpp"
 
 #include "graphdev/nodeId.hpp"
 #include "graphdev/enterNode.hpp"
@@ -11,13 +11,18 @@
 #include "glsl/operator.hpp"
 #include "glsl/swizzle.hpp"
 
-namespace graphdev::shadertoy {
+namespace graphdev::glsl {
 
-std::string Compiler::compile(Shader& shader) {
+std::string Compiler::compile(const Program& program, const std::string& entryPoint) {
     _identifier_counter = 0;
     _nodeText.clear();
 
-    _parseUserFunc(shader.mainImage);
+    auto* userFunc = program.getUserFunction(entryPoint);
+    if (!userFunc) {
+        return {};
+    }
+
+    _parseUserFunc(userFunc);
 
     return _text.str();
 }

@@ -1,11 +1,12 @@
 
-#include "shadertoy/compiler.hpp"
 #include "shadertoy/shader.hpp"
 
 #include "glsl/vec.hpp"
 #include "glsl/builtin.hpp"
 #include "glsl/operator.hpp"
 #include "glsl/swizzle.hpp"
+
+#include "glsl/compiler.hpp"
 
 #include <iostream>
 
@@ -42,8 +43,7 @@ int main(int argc, char** argv) {
 
     // graph.connect(uvNode, 0, fragColorNode, 0);
     
-    graphdev::shadertoy::Compiler compiler;
-    std::cout << compiler.compile(shader) << std::endl;
+    std::cout << shader.compile() << std::endl;
 
     return 0;
 }

@@ -15,7 +15,7 @@ UserFunction* Program::createUserFunction(const std::string& name) {
     return uf;
 }
 
-UserFunction* Program::getUserFunction(const std::string& name) {
+UserFunction* Program::getUserFunction(const std::string& name) const {
     auto result = _userFunctions.find(name);
 
     return result != _userFunctions.end() ? result->second.get() : nullptr;

@@ -1,5 +1,6 @@
 #include "shadertoy/shader.hpp"
 
+#include "glsl/compiler.hpp"
 #include "glsl/flags.hpp"
 #include "glsl/module.hpp"
 #include "shadertoy/module.hpp"
@@ -20,6 +21,11 @@ Shader::Shader ()
     mainImage->initializeGraph();
 
     mainImage->enterNode = mainImage->graph.findNodeByName("fragColor");
+}
+
+std::string Shader::compile() {
+    glsl::Compiler compiler;
+    return compiler.compile(program, "mainImage");
 }
 
 }

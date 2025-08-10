@@ -1,5 +1,4 @@
 set(shadertoy_source_files
-    compiler.hpp compiler.cpp
     module.hpp module.cpp
     shader.hpp shader.cpp
 )

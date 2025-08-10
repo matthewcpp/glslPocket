@@ -1,6 +1,6 @@
 #pragma once
 
-#include "shadertoy/shader.hpp"
+#include "graphdev/program.hpp"
 
 #include <string>
 #include <sstream>
@@ -15,13 +15,13 @@ class Swizzle;
 
 }
 
-namespace graphdev::shadertoy {
+namespace graphdev::glsl {
 
 // https://shadertoyunofficial.wordpress.com/2016/07/20/special-shadertoy-features/
 
 class Compiler {
 public:
-    std::string compile(Shader& shader);
+    std::string compile(const Program& program, const std::string& entryPoint);
 
 private:
     void _parseUserFunc(const UserFunction* func);
@@ -35,7 +35,7 @@ private:
     void _parseSwizzle(const glsl::Swizzle* node);
 
 private:
-    const Shader* _shader;
+    const Program* _program;
     std::ostringstream _text;
     std::unordered_map<const Node*, std::string> _nodeText;
     uint32_t _identifier_counter;

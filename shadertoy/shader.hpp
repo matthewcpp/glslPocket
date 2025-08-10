@@ -10,6 +10,7 @@ class Shader {
 public:
     Shader();
 
+    std::string compile();
 private:
     TypeRegistry _typeRegistry;
     NodeRegistry _nodeRegistry;

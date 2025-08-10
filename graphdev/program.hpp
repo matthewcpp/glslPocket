@@ -14,7 +14,7 @@ public:
     Program(TypeRegistry& typeRegistry, NodeRegistry& nodeRegistry) : _typeRegistry(typeRegistry), _nodeRegistry(nodeRegistry) {}
 
     UserFunction* createUserFunction(const std::string& name);
-    UserFunction* getUserFunction(const std::string& name);
+    UserFunction* getUserFunction(const std::string& name) const;
 
 private:
     TypeRegistry& _typeRegistry;
