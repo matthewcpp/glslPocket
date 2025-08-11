@@ -8,6 +8,8 @@
 
 #include "glsl/compiler.hpp"
 
+#include "graph/jsonReader.hpp"
+
 #include <iostream>
 
 enum NodeId {
@@ -17,7 +19,9 @@ enum NodeId {
 
 int main(int argc, char** argv) {
     shadertoy::Shader shader;
+    shader.load("/Users/mlarocca/development/scratch/shadertoy_new.json");
 
+    /*
     graph::Graph& graph = shader.mainImage->graph;
 
     auto* colorNode = dynamic_cast<glsl::Vec*>(graph.createNode("glsl::vec4"));
@@ -49,6 +53,7 @@ int main(int argc, char** argv) {
     graph.connect(cosNode, 0, fragColorNode, 0);
 
     // graph.connect(uvNode, 0, fragColorNode, 0);
+    */
     
     std::cout << shader.compile() << std::endl;
 

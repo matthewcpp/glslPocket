@@ -10,6 +10,9 @@ class Shader {
 public:
     Shader();
 
+    void createNew();
+    bool load(const std::string& path);
+
     std::string compile();
 private:
     graph::TypeRegistry _typeRegistry;

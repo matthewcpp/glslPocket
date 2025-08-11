@@ -1,5 +1,7 @@
 #include "shadertoy/shader.hpp"
 
+#include "graph/jsonReader.hpp"
+
 #include "glsl/compiler.hpp"
 #include "glsl/flags.hpp"
 #include "glsl/module.hpp"
@@ -13,14 +15,21 @@ Shader::Shader ()
 {
     glslModuleInit(_typeRegistry, _nodeRegistry);
     shadertoyModuleInit(_typeRegistry, _nodeRegistry);
+}
 
+void Shader::createNew() {
     mainImage = program.createUserFunction("mainImage");
 
     mainImage->parameters.emplace_back("fragColor", _typeRegistry.getType("vec4"), glsl::GlslFunctionParameterFlagOut);
     mainImage->parameters.emplace_back("fragCoord", _typeRegistry.getType("vec2"), glsl::GlslFunctionParameterFlagIn);
     mainImage->initializeGraph();
 
-    mainImage->enterNode = mainImage->graph.findNodeByName("fragColor");
+    mainImage->exitNode = mainImage->graph.findNodeByName("fragColor");
+}
+
+bool Shader::load(const std::string& path){
+    graph::JsonReader reader;
+    return reader.load(program, path);
 }
 
 std::string Shader::compile() {
