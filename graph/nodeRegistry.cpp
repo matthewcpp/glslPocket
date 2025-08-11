@@ -1,13 +1,17 @@
 #include "nodeRegistry.hpp"
 
-#include "graph/enterNode.hpp"
+#include "graph/exitNode.hpp"
 
 namespace graph {
+
+Node* exitNode(NodeUniqueId uniqueId, TypeRegistry& typeRegistry) {
+    return new ExitNode(uniqueId, typeRegistry);
+}
 
 NodeRegistry::NodeRegistry(TypeRegistry& typeRegistry) 
     : _typeRegistry(typeRegistry) 
 {
-    registerNode("graphdev::enter", enterNode);
+    registerNode("graphdev::exit", exitNode);
 }
 
 bool NodeRegistry::registerNode(const std::string& nodeType, CreateNodeFunc nodeFunc) {

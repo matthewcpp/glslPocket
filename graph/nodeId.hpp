@@ -3,7 +3,7 @@
 namespace graph {
 
 enum GraphdevNodeId {
-    GraphdevNodeEnter = 0
+    GraphdevNodeExit = 0
 };
 
 }

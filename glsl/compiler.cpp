@@ -1,7 +1,7 @@
 #include "glsl/compiler.hpp"
 
 #include "graph/nodeId.hpp"
-#include "graph/enterNode.hpp"
+#include "graph/exitNode.hpp"
 
 #include "glsl/flags.hpp"
 #include "glsl/nodeId.hpp"
@@ -56,7 +56,7 @@ void Compiler::_parseUserFunc(const graph::UserFunction* func) {
 
     _text << ") {" << std::endl;
 
-    _parseNode(func->enterNode);
+    _parseNode(func->exitNode);
 
     _text << "}";
 }
@@ -69,8 +69,8 @@ void Compiler::_parseNode(const graph::Node* node) {
     }
 
     switch (node->typeId()) {
-        case graph::GraphdevNodeId::GraphdevNodeEnter:
-            _parseNode(dynamic_cast<const graph::EnterNode*>(node)->targetNode);
+        case graph::GraphdevNodeId::GraphdevNodeExit:
+            _parseNode(dynamic_cast<const graph::ExitNode*>(node)->targetNode);
             break;
         case glsl::GlslNodeId::GlslNodeFloat:
             _parseFloat(dynamic_cast<const glsl::Float*>(node));

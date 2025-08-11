@@ -13,7 +13,7 @@ bool UserFunction::initializeGraph() {
         auto* returnNode = graph.createNodeForType(returnType->name());
         returnNode->setName("return");
     } else {
-        enterNode = graph.createNode("graphdev::enter");
+        exitNode = graph.createNode("graphdev::exit");
     }
 
     return true;

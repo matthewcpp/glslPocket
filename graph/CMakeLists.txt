@@ -1,6 +1,6 @@
 set(graphdev_source_files
     connection.hpp
-    enterNode.hpp enterNode.cpp
+    exitNode.hpp exitNode.cpp
     graph.hpp graph.cpp
     node.hpp
     nodeRegistry.hpp nodeRegistry.cpp
