@@ -10,6 +10,7 @@ set(graphdev_source_files
     type.hpp
 
     jsonReader.hpp jsonReader.cpp
+    jsonWriter.hpp jsonWriter.cpp
 )
 
 add_library(graph STATIC ${graphdev_source_files})

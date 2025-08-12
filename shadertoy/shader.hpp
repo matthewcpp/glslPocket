@@ -12,6 +12,7 @@ public:
 
     void createNew();
     bool load(const std::string& path);
+    bool write(const std::string& path);
 
     std::string compile();
 private:

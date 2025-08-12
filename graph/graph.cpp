@@ -30,6 +30,18 @@ Node* Graph::findNodeByName(const std::string& name) {
     return result != _nodes.end() ? result->get() : nullptr;
 }
 
+void Graph::iterateNodes(NodeItrFunc func) const {
+    for (const auto& node : _nodes) {
+        func(node.get());
+    }
+}
+
+void Graph::iterateConnections(ConnectionItrFunc func) const {
+    for (const auto& conn : _connections) {
+        func(conn.get());
+    }
+}
+
 Connection* Graph::connect(Node* fromNode, size_t fromPortIndex, Node* toNode, size_t toPortIndex) {
     auto connection = std::make_unique<Connection>(fromNode, fromPortIndex, toNode, toPortIndex);
     auto* c = connection.get();

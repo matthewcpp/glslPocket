@@ -1,6 +1,7 @@
 #include "shadertoy/shader.hpp"
 
 #include "graph/jsonReader.hpp"
+#include "graph/jsonWriter.hpp"
 
 #include "glsl/compiler.hpp"
 #include "glsl/flags.hpp"
@@ -30,6 +31,11 @@ void Shader::createNew() {
 bool Shader::load(const std::string& path){
     graph::JsonReader reader;
     return reader.load(program, path);
+}
+
+bool Shader::write(const std::string& path) {
+    graph::JsonWriter writer;
+    return writer.write(program, path, true);
 }
 
 std::string Shader::compile() {

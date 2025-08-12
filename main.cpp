@@ -56,6 +56,7 @@ int main(int argc, char** argv) {
     */
     
     std::cout << shader.compile() << std::endl;
+    shader.write("/Users/mlarocca/development/scratch/shadertoy_new_out.json");
 
     return 0;
 }

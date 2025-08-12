@@ -15,6 +15,12 @@ UserFunction* Program::createUserFunction(const std::string& name) {
     return uf;
 }
 
+void Program::iterateUserFuncs(UserFunctionItrFunc func) const {
+    for (const auto& userFunc : _userFunctions) {
+        func(userFunc.second.get());
+    }
+}
+
 UserFunction* Program::getUserFunction(const std::string& name) const {
     auto result = _userFunctions.find(name);
 

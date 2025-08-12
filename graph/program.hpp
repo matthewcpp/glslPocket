@@ -4,6 +4,7 @@
 #include "nodeRegistry.hpp"
 #include "userFunction.hpp"
 
+#include <functional>
 #include <memory>
 #include <unordered_map>
 
@@ -15,6 +16,9 @@ public:
 
     UserFunction* createUserFunction(const std::string& name);
     UserFunction* getUserFunction(const std::string& name) const;
+
+    using UserFunctionItrFunc = std::function<void(const UserFunction*)>;
+    void iterateUserFuncs(UserFunctionItrFunc func) const;
 
 private:
     TypeRegistry& _typeRegistry;
