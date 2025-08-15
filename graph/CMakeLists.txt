@@ -1,7 +1,9 @@
 set(graphdev_source_files
-    connection.hpp
+    callback.hpp
+    connection.hpp connection.cpp
     graph.hpp graph.cpp
-    node.hpp
+    hooks.hpp
+    node.hpp node.cpp
     program.hpp program.cpp
     property.hpp property.cpp
     

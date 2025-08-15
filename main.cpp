@@ -1,14 +1,9 @@
 
 #include "shadertoy/shader.hpp"
-
-#include "glsl/vec.hpp"
-#include "glsl/builtin.hpp"
-#include "glsl/operator.hpp"
-#include "glsl/swizzle.hpp"
-
-#include "glsl/compiler.hpp"
-
-#include "graph/jsonReader.hpp"
+#include "commands/commandProcessor.hpp"
+#include "commands/createStructNode.hpp"
+#include "commands/setProperty.hpp"
+#include "commands/createConnection.hpp"
 
 #include <iostream>
 
@@ -17,9 +12,45 @@ enum NodeId {
     Vec4
 };
 
+void onNodeCreated(graph::Node* node) {
+    std::cout << "Created: " << node->toString() << std::endl;
+}
+
+void onNodeDeleted(graph::Node* node) {
+    std::cout << "Deleted: " << node->toString() << std::endl;
+}
+
+void onConnectionCreated(graph::Connection* connection) {
+    std::cout << "Created: " << connection->toString() << std::endl;
+}
+
+void onConnectionDeleted(graph::Connection* connection) {
+    std::cout << "Deleted: " << connection->toString() << std::endl;
+}
+
 int main(int argc, char** argv) {
     shadertoy::Shader shader;
-    shader.load("/Users/mlarocca/development/scratch/shadertoy_new.json");
+
+    shader.program.hooks.nodeCreated.add(onNodeCreated);
+    shader.program.hooks.nodeDeleted.add(onNodeDeleted);
+    shader.program.hooks.connectionCreated.add(onConnectionCreated);
+
+    shader.createNew();
+    //shader.load("/Users/mlarocca/development/scratch/shadertoy_new.json");
+
+    command::Processor commandProcessor;
+    commandProcessor.execute(new command::CreateStructNode(shader.mainImage, "glsl::vec4", "colorNode"));
+    commandProcessor.undo();
+    commandProcessor.redo();
+    graph::Node* colorNode = shader.mainImage->graph.getNodeById(dynamic_cast<const command::CreateStructNode*>(commandProcessor.last())->createdNodeId());
+
+    commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "x", 0.1f));
+    commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "y", 0.85f));
+    commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "z", 0.1f));
+    commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "w", 1.0f));
+    
+    auto* fragColorNode = shader.mainImage->graph.findNodeByName("fragColor");
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, colorNode, 0, fragColorNode, 0));
 
     /*
     graph::Graph& graph = shader.mainImage->graph;

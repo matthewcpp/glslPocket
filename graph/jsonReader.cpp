@@ -94,7 +94,7 @@ void JsonReader::parseFunctions() {
             Node* toNode = _context->nodes[connection["toNode"].get<size_t>()];
             auto toPort = connection["toPort"].get<size_t>();
 
-            userFunction->graph.connect(fromNode, fromPort, toNode, toPort);
+            userFunction->graph.createConnection(fromNode, fromPort, toNode, toPort);
         }
     }
 }

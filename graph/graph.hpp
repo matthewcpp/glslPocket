@@ -1,6 +1,7 @@
 #pragma once
 
 #include "graph/connection.hpp"
+#include "graph/hooks.hpp"
 #include "graph/node.hpp"
 #include "graph/schemaRegistry.hpp"
 
@@ -13,12 +14,14 @@ namespace graph {
 
 class Graph{
 public:
-    Graph(SchemaRegistry& schemaRegistry) : _schemaRegistry(schemaRegistry) {}
+    Graph(SchemaRegistry& schemaRegistry, Hooks& hooks) : _schemaRegistry(schemaRegistry), _hooks(hooks) {}
 
 public:
     Node* createNode(const std::string& schemaName, const std::string& nodeName);
+    Node* createNodeWithId(NodeUniqueId, const std::string& schemaName, const std::string& nodeName);
     Node* createNodeForType(const Type* type, const std::string& nodeName);
-    Node* createNodeWithSchema(const Schema* schema, const std::string& nodeName);
+
+    bool deleteNode(NodeUniqueId id);
 
     using NodeItrFunc = std::function<void(const Node*)>;
     void iterateNodes(NodeItrFunc func) const;
@@ -29,16 +32,20 @@ public:
     Node* findNodeByName(const std::string& name);
     Node* getNodeById(NodeUniqueId id);
 
-    const Connection* connect(Node* fromNode, size_t fromPortIndex, Node* toNode, size_t toPortIndex);
-    const Connection* connect(NodeUniqueId fromNode, size_t fromPortIndex, NodeUniqueId toNode, size_t toPortIndex);
-    
+    const Connection* createConnection(Node* fromNode, size_t fromPortIndex, Node* toNode, size_t toPortIndex);
+    const Connection* createConnection(NodeUniqueId fromNode, size_t fromPortIndex, NodeUniqueId toNode, size_t toPortIndex);
+    const Connection* createConnectionWithId(ConnectionUniqueId id, NodeUniqueId fromNode, size_t fromPortIndex, NodeUniqueId toNode, size_t toPortIndex);
+    bool deleteConnection(ConnectionUniqueId id);
+    bool deleteConnection(Connection* connection);
 
 private:
-    std::vector<std::unique_ptr<Node>> _nodes;
-    std::unordered_map<NodeUniqueId, Node*> _nodesById;
-    std::vector<std::unique_ptr<Connection>> _connections;
-    std::unordered_map<ConnectionUniqueId, Connection*> _connectionsById;
+    Node* createNewNode(NodeUniqueId nodeId, const Schema* schema, const std::string& nodeName);
+    Connection* createNewConnection(ConnectionUniqueId connectionId, Node* fromNode, size_t fromPortIndex, Node* toNode, size_t toPortIndex);
 
+private:
+    std::unordered_map<NodeUniqueId, std::unique_ptr<Node>> _nodesById;
+    std::unordered_map<ConnectionUniqueId, std::unique_ptr<Connection>> _connectionsById;
+    Hooks& _hooks;
     SchemaRegistry& _schemaRegistry;
     NodeUniqueId _nextNodeUniqueId = 0;
     ConnectionUniqueId _nextConnectionUniqueId = 0;

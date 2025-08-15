@@ -11,6 +11,8 @@ public:
     SetProperty(graph::UserFunction* userFunc, graph::Node* node, const std::string& name, const graph::Property::ValueType& value);
 
     virtual bool execute() override;
+    virtual void undo() override;
+    virtual void redo() override;
 
 private:
     graph::UserFunction* _userFunc;

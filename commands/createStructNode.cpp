@@ -12,4 +12,12 @@ bool CreateStructNode::execute() {
     return true;
 }
 
+void CreateStructNode::undo() {
+    _userFunc->graph.deleteNode(_createdNodeId);
+}
+
+void CreateStructNode::redo() {
+    _userFunc->graph.createNodeWithId(_createdNodeId, _schemaName, _nodeName);
+}
+
 }

@@ -7,7 +7,7 @@ UserFunction* Program::createUserFunction(const std::string& name) {
         return nullptr;
     }
 
-    auto userFunction = std::make_unique<UserFunction>(_typeRegistry, _schemaRegistry, name);
+    auto userFunction = std::make_unique<UserFunction>(_typeRegistry, _schemaRegistry, hooks, name);
     auto* uf = userFunction.get();
 
     _userFunctions[name] = std::move(userFunction);

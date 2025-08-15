@@ -59,47 +59,16 @@ public:
     const std::vector<OutputPort>& outputs() const { return _outputs; }
     const std::vector<Property>& properties() const { return _properties; }
 
-
-    void setInputConnection(size_t index, const Connection* connection) {
-        _inputs[index].connection = connection;
-    }
-
-    void addOutputConnection(size_t index, const Connection* connection) {
-        _outputs[index].connections.push_back(connection);
-    }
-
-    bool setProperty(const std::string& name, Property::ValueType value) {
-        auto result = std::find_if(_properties.begin(), _properties.end(), [&name](const Property& p) {
-            return p.name == name;
-        });
-
-        if (result == _properties.end()) {
-            return false;
-        }
-
-        auto& p = *result;
-        if (p.value.index() != value.index()) {
-            return false;
-        }
-
-        p.value = value;
-
-        return true;
-    }
-
-    const Property& getProperty(const std::string& name) {
-        auto result = std::find_if(_properties.begin(), _properties.end(), [&name](const Property& p) {
-            return p.name == name;
-        });
-
-        return result != _properties.end() ? *result : Property::invalid();
-    }
+    std::string toString() const;
+    bool setProperty(const std::string& name, Property::ValueType value);
+    const Property& getProperty(const std::string& name);
 
     uint32_t flags = NodeFlags::NodeFlagNone;
 
 private:
 
     friend class Schema;
+    friend class Graph;
 
     bool addProperty(const std::string& name, const Property::ValueType& value) {
         _properties.emplace_back(name, value);

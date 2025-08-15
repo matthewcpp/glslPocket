@@ -20,4 +20,14 @@ bool SetProperty::execute() {
     return node->setProperty(_propertyName, _newValue);
 }
 
+void SetProperty::undo() {
+    graph::Node* node = _userFunc->graph.getNodeById(_nodeId);
+    node->setProperty(_propertyName, _originalValue);
+}
+
+void SetProperty::redo() {
+    graph::Node* node = _userFunc->graph.getNodeById(_nodeId);
+    node->setProperty(_propertyName, _newValue);
+}
+
 }

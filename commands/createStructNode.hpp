@@ -12,6 +12,8 @@ public:
         :_userFunc(userFunc), _schemaName(schemaName), _nodeName(nodeName) {}
 
     virtual bool execute() override;
+    virtual void undo() override;
+    virtual void redo() override;
 
     graph::NodeUniqueId createdNodeId() const { return _createdNodeId; }
 

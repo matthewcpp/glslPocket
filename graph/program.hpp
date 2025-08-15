@@ -1,7 +1,8 @@
 #pragma once
 
-#include "graph/typeRegistry.hpp"
+#include "graph/hooks.hpp"
 #include "graph/schemaRegistry.hpp"
+#include "graph/typeRegistry.hpp"
 #include "graph/userFunction.hpp"
 
 #include <functional>
@@ -20,6 +21,7 @@ public:
     using UserFunctionItrFunc = std::function<void(const UserFunction*)>;
     void iterateUserFuncs(UserFunctionItrFunc func) const;
 
+    Hooks hooks;
 private:
     TypeRegistry& _typeRegistry;
     SchemaRegistry& _schemaRegistry;

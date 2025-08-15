@@ -5,6 +5,8 @@ set (commands_sources
     createConnection.hpp createConnection.cpp
     createStructNode.hpp createStructNode.cpp
     setProperty.hpp setProperty.cpp
+
+    nodeConnections.hpp nodeConnections.cpp
 )
 
 add_library(commands STATIC ${commands_sources})

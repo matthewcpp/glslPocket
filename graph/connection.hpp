@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
 
 namespace graph {
 
@@ -21,6 +22,8 @@ struct Connection {
     size_t toPortIndex;
 
     ConnectionUniqueId uniqueId() const { return _uniqueId; }
+
+    std::string toString() const;
 
 private:
     ConnectionUniqueId _uniqueId;
