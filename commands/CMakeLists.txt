@@ -1,0 +1,11 @@
+set (commands_sources
+    commandProcessor.hpp commandProcessor.cpp
+
+    command.hpp
+    createConnection.hpp createConnection.cpp
+    createStructNode.hpp createStructNode.cpp
+    setProperty.hpp setProperty.cpp
+)
+
+add_library(commands STATIC ${commands_sources})
+target_link_libraries(commands PRIVATE graph)

@@ -87,6 +87,14 @@ public:
         return true;
     }
 
+    const Property& getProperty(const std::string& name) {
+        auto result = std::find_if(_properties.begin(), _properties.end(), [&name](const Property& p) {
+            return p.name == name;
+        });
+
+        return result != _properties.end() ? *result : Property::invalid();
+    }
+
     uint32_t flags = NodeFlags::NodeFlagNone;
 
 private:

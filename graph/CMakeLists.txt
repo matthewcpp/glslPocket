@@ -3,6 +3,7 @@ set(graphdev_source_files
     graph.hpp graph.cpp
     node.hpp
     program.hpp program.cpp
+    property.hpp property.cpp
     
     schemaRegistry.hpp schemaRegistry.cpp
     typeRegistry.hpp typeRegistry.cpp

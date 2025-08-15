@@ -16,8 +16,9 @@ public:
     Graph(SchemaRegistry& schemaRegistry) : _schemaRegistry(schemaRegistry) {}
 
 public:
-    Node* createNode(const std::string& nodeType);
-    Node* createNodeForType(const Type* type);
+    Node* createNode(const std::string& schemaName, const std::string& nodeName);
+    Node* createNodeForType(const Type* type, const std::string& nodeName);
+    Node* createNodeWithSchema(const Schema* schema, const std::string& nodeName);
 
     using NodeItrFunc = std::function<void(const Node*)>;
     void iterateNodes(NodeItrFunc func) const;
@@ -26,12 +27,11 @@ public:
     void iterateConnections(ConnectionItrFunc func) const;
 
     Node* findNodeByName(const std::string& name);
+    Node* getNodeById(NodeUniqueId id);
 
     const Connection* connect(Node* fromNode, size_t fromPortIndex, Node* toNode, size_t toPortIndex);
     const Connection* connect(NodeUniqueId fromNode, size_t fromPortIndex, NodeUniqueId toNode, size_t toPortIndex);
-
-private:
-    Node* createNodeWithSchema(const Schema* schema);
+    
 
 private:
     std::vector<std::unique_ptr<Node>> _nodes;

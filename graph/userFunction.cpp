@@ -4,16 +4,14 @@ namespace graph {
 
 bool UserFunction::initializeGraph() {
     for (const auto& param : parameters) {
-        auto* paramNode = graph.createNodeForType(param.type);
-        paramNode->setName(param.name);
+        auto* paramNode = graph.createNodeForType(param.type, param.name);
         paramNode->flags |= NodeFlags::NodeFlagDefinedInScope;
     }
 
     if (returnType) {
-        auto* returnNode = graph.createNodeForType(returnType);
-        returnNode->setName("return");
+        auto* returnNode = graph.createNodeForType(returnType, "exit");
     } else {
-        exitNode = graph.createNode("graphdev::exit");
+        exitNode = graph.createNode("graphdev::exit", "exit");
     }
 
     return true;

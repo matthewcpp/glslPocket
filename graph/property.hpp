@@ -24,8 +24,19 @@ struct Property {
         return !(*this == other);
     }
 
+    bool isValid() const {
+        return !name.empty();
+    }
+
+    static const Property& invalid() {
+        return _invalid;
+    }
+
     std::string name;
     ValueType value;
+
+private:
+    static Property _invalid;
 };
 
 }

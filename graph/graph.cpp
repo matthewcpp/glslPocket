@@ -2,20 +2,20 @@
 
 namespace graph {
 
-Node* Graph::createNode(const std::string& nodeType) {
-    return createNodeWithSchema(_schemaRegistry.get(nodeType));
+Node* Graph::createNode(const std::string& schemaName, const std::string& nodeName) {
+    return createNodeWithSchema(_schemaRegistry.get(schemaName), nodeName);
 }
 
-Node* Graph::createNodeForType(const Type* type) {
-    return createNodeWithSchema(_schemaRegistry.getForType(type));
+Node* Graph::createNodeForType(const Type* type, const std::string& nodeName) {
+    return createNodeWithSchema(_schemaRegistry.getForType(type), nodeName);
 }
 
-Node* Graph::createNodeWithSchema(const Schema* schema) {
+Node* Graph::createNodeWithSchema(const Schema* schema, const std::string& nodeName) {
     if (!schema) {
         return nullptr;
     }
 
-    Node* node = new Node(++_nextNodeUniqueId, schema->name());
+    Node* node = new Node(++_nextNodeUniqueId, nodeName);
     schema->apply(node);
 
     _nodes.emplace_back().reset(node);
@@ -30,6 +30,12 @@ Node* Graph::findNodeByName(const std::string& name) {
     });
 
     return result != _nodes.end() ? result->get() : nullptr;
+}
+
+Node* Graph::getNodeById(NodeUniqueId id) {
+    auto result = _nodesById.find(id);
+
+    return result != _nodesById.end() ? result->second : nullptr;
 }
 
 void Graph::iterateNodes(NodeItrFunc func) const {

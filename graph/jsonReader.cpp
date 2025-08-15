@@ -60,8 +60,7 @@ void JsonReader::parseFunctions() {
             auto nodeSchema = node["schema"].get<std::string>();
             auto nodeFlags = node["flags"].get<uint32_t>();
 
-            auto* graphNode = userFunction->graph.createNode(nodeSchema);
-            graphNode->setName(nodeName);
+            auto* graphNode = userFunction->graph.createNode(nodeSchema, nodeName);
             graphNode->flags = nodeFlags;
 
             if (node.contains("properties")) {
