@@ -3,23 +3,25 @@
 namespace graph {
 
 Node* Graph::createNode(const std::string& nodeType) {
-    auto* node_ptr = _nodeRegistry.createNode(++_nextUniqueId, nodeType);
-
-    if (node_ptr) {
-        _nodes.emplace_back().reset(node_ptr);
-    }
-
-    return node_ptr;
+    return createNodeWithSchema(_schemaRegistry.get(nodeType));
 }
 
-Node* Graph::createNodeForType(const std::string& typeName) {
-    auto* node_ptr = _nodeRegistry.createNodeForType(++_nextUniqueId, typeName);
+Node* Graph::createNodeForType(const Type* type) {
+    return createNodeWithSchema(_schemaRegistry.getForType(type));
+}
 
-    if (node_ptr) {
-        _nodes.emplace_back().reset(node_ptr);
+Node* Graph::createNodeWithSchema(const Schema* schema) {
+    if (!schema) {
+        return nullptr;
     }
 
-    return node_ptr;
+    Node* node = new Node(++_nextNodeUniqueId, schema->name());
+    schema->apply(node);
+
+    _nodes.emplace_back().reset(node);
+    _nodesById[node->uniqueId()] = node;
+
+    return node;
 }
 
 Node* Graph::findNodeByName(const std::string& name) {
@@ -42,15 +44,27 @@ void Graph::iterateConnections(ConnectionItrFunc func) const {
     }
 }
 
-Connection* Graph::connect(Node* fromNode, size_t fromPortIndex, Node* toNode, size_t toPortIndex) {
-    auto connection = std::make_unique<Connection>(fromNode, fromPortIndex, toNode, toPortIndex);
+const Connection* Graph::connect(Node* fromNode, size_t fromPortIndex, Node* toNode, size_t toPortIndex) {
+    auto connection = std::make_unique<Connection>(++_nextConnectionUniqueId, fromNode, fromPortIndex, toNode, toPortIndex);
     auto* c = connection.get();
     _connections.emplace_back(std::move(connection));
+    _connectionsById[c->uniqueId()] = c;
 
     fromNode->addOutputConnection(fromPortIndex, c);
     toNode->setInputConnection(toPortIndex, c);
 
     return c;
+}
+
+const Connection* Graph::connect(NodeUniqueId fromNode, size_t fromPortIndex, NodeUniqueId toNode, size_t toPortIndex) {
+    auto fromNodeResult = _nodesById.find(fromNode);
+    auto toNodeResult = _nodesById.find(toNode);
+
+    if (fromNodeResult == _nodesById.end() || toNodeResult == _nodesById.end()) {
+        return nullptr;
+    }
+
+    return connect(fromNodeResult->second, fromPortIndex, toNodeResult->second, toPortIndex);
 }
 
 }

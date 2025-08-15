@@ -1,8 +1,8 @@
 #pragma once
 
-#include "typeRegistry.hpp"
-#include "nodeRegistry.hpp"
-#include "userFunction.hpp"
+#include "graph/typeRegistry.hpp"
+#include "graph/schemaRegistry.hpp"
+#include "graph/userFunction.hpp"
 
 #include <functional>
 #include <memory>
@@ -12,7 +12,7 @@ namespace graph {
 
 class Program {
 public:
-    Program(TypeRegistry& typeRegistry, NodeRegistry& nodeRegistry) : _typeRegistry(typeRegistry), _nodeRegistry(nodeRegistry) {}
+    Program(TypeRegistry& typeRegistry, SchemaRegistry& schemaRegistry) : _typeRegistry(typeRegistry), _schemaRegistry(schemaRegistry) {}
 
     UserFunction* createUserFunction(const std::string& name);
     UserFunction* getUserFunction(const std::string& name) const;
@@ -22,7 +22,7 @@ public:
 
 private:
     TypeRegistry& _typeRegistry;
-    NodeRegistry& _nodeRegistry;
+    SchemaRegistry& _schemaRegistry;
     std::unordered_map<std::string, std::unique_ptr<UserFunction>> _userFunctions;
 };
 

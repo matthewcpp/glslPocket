@@ -1,67 +1,48 @@
 #include "glsl/module.hpp"
 
-#include "glsl/operator.hpp"
-#include "glsl/builtin.hpp"
-#include "glsl/swizzle.hpp"
-
-#include "glsl/float.hpp"
-#include "glsl/vec.hpp"
+#include "graph/nodeId.hpp"
+#include "graph/attribute.hpp"
+#include "graph/function.hpp"
+#include "graph/struct.hpp"
+#include "graph/operator.hpp"
+#include "graph/value.hpp"
 
 namespace glsl {
 
-static graph::Node* GlslFloatNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Float(uniqueId, typeRegistry, "float");
+static graph::Schema* vec2(const graph::Type* type) {
+    graph::Schema* vec2 = new graph::Struct(type, "glsl::vec2");
+    vec2->addProperty("x", 0.0f);
+    vec2->addProperty("y", 0.0f);
+    return vec2;
 }
 
-static graph::Node* GlslVec2Node(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Vec(uniqueId, typeRegistry, Vec::Type::Vec2, "vec2");
+static graph::Schema* vec3(const graph::Type* type) {
+    graph::Schema* vec3 = new graph::Struct(type, "glsl::vec3");
+    vec3->addProperty("x", 0.0f);
+    vec3->addProperty("y", 0.0f);
+    vec3->addProperty("z", 0.0f);
+    return vec3;
 }
 
-static graph::Node* GlslVec3Node(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Vec(uniqueId, typeRegistry, Vec::Type::Vec3, "vec3");
+static graph::Schema* vec4(const graph::Type* type) {
+    graph::Schema* vec4 = new graph::Struct(type, "glsl::vec4");
+    vec4->addProperty("x", 0.0f);
+    vec4->addProperty("y", 0.0f);
+    vec4->addProperty("z", 0.0f);
+    vec4->addProperty("w", 0.0f);
+    return vec4;
 }
 
-static graph::Node* GlslVec4Node(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Vec(uniqueId, typeRegistry, Vec::Type::Vec4, "vec4");
-}
-
-static graph::Node* GlslAddNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Operator(uniqueId, typeRegistry, Operator::Type::Add, "Add");
-}
-
-static graph::Node* GlslSubtractNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Operator(uniqueId, typeRegistry, Operator::Type::Subtract, "Subtract");
-}
-
-static graph::Node* GlslMultiplyNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Operator(uniqueId, typeRegistry, Operator::Type::Multiply, "Multiply");
-}
-
-static graph::Node* GlslDivideNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Operator(uniqueId, typeRegistry, Operator::Type::Divide, "Divide");
-}
-
-static graph::Node* GlslCosNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Builtin(uniqueId, typeRegistry, Builtin::Function::Cos, "cos");
-}
-
-static graph::Node* GlslSwizzleNode(graph::NodeUniqueId uniqueId, graph::TypeRegistry& typeRegistry) {
-    return new Swizzle(uniqueId, typeRegistry, "Swizzle");
-}
-
-}
-
-void glslModuleInit(graph::TypeRegistry& typeRegistry, graph::NodeRegistry& nodeRegistry) {
+void initModule(graph::TypeRegistry& typeRegistry, graph::SchemaRegistry& schemaRegistry) {
     using namespace glsl;
-    nodeRegistry.registerNode("glsl::swizzle", GlslSwizzleNode);
-    nodeRegistry.registerNode("glsl::add", GlslAddNode);
-    nodeRegistry.registerNode("glsl::multiply", GlslMultiplyNode);
-    nodeRegistry.registerNode("glsl::divide", GlslDivideNode);
+    const graph::Type* vec2Type = typeRegistry.registerType("vec2");
+    const graph::Type* vec3Type = typeRegistry.registerType("vec3");
+    const graph::Type* vec4Type = typeRegistry.registerType("vec4");
 
-    nodeRegistry.registerNode("glsl::cos", GlslCosNode);
+    schemaRegistry.addForType(vec2Type, vec2(vec2Type));
+    schemaRegistry.addForType(vec3Type, vec3(vec3Type));
+    schemaRegistry.addForType(vec4Type, vec4(vec4Type));
 
-    nodeRegistry.registerNodeWithType("glsl::float", typeRegistry.registerType("float")->name(), GlslFloatNode);
-    nodeRegistry.registerNodeWithType("glsl::vec2", typeRegistry.registerType("vec2")->name(), GlslVec2Node);
-    nodeRegistry.registerNodeWithType("glsl::vec3", typeRegistry.registerType("vec3")->name(), GlslVec3Node);
-    nodeRegistry.registerNodeWithType("glsl::vec4", typeRegistry.registerType("vec4")->name(), GlslVec4Node);
+}
+
 }

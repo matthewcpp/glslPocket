@@ -3,7 +3,12 @@
 namespace graph {
 
 enum GraphdevNodeId {
-    GraphdevNodeExit = 0
+    GraphdevNodeUnspecified,
+    GraphdevNodeStruct,
+    GraphdevNodeOperator,
+    GraphdevNodeAttribute,
+    GraphdevNodeFunction,
+    GraphdevNodeValue
 };
 
 }

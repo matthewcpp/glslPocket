@@ -1,6 +1,8 @@
 #pragma once
 
-#include "graph.hpp"
+#include "graph/graph.hpp"
+#include "graph/typeRegistry.hpp"
+#include "graph/schemaRegistry.hpp"
 
 #include <string>
 #include <vector>
@@ -9,8 +11,8 @@ namespace graph {
 
 class UserFunction {
 public:
-    UserFunction(TypeRegistry& typeRegistry, NodeRegistry& nodeRegistry, const std::string& name)
-        :graph(nodeRegistry), _typeRegistry(typeRegistry), name(name) {}
+    UserFunction(TypeRegistry& typeRegistry, SchemaRegistry& schemaRegistry, const std::string& name)
+        :graph(schemaRegistry), _typeRegistry(typeRegistry), name(name) {}
 
     struct Parameter{
         Parameter(const std::string& name, const Type* type, uint32_t flags) : name(name), type(type), flags(flags) {}

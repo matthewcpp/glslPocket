@@ -20,15 +20,11 @@ public:
     std::string compile(const graph::Program& program, const std::string& entryPoint);
 
 private:
+
     void _parseUserFunc(const graph::UserFunction* func);
 
     void _parseNode(const graph::Node* node);
-    void _parseFloat(const glsl::Float* node);
-    void _parseVec(const glsl::Vec* node);
-
-    void _parseBuiltin(const glsl::Builtin* node);
-    void _parseOperator(const glsl::Operator* node);
-    void _parseSwizzle(const glsl::Swizzle* node);
+    void _parseStruct(const graph::Node* node);
 
 private:
     const graph::Program* _program;

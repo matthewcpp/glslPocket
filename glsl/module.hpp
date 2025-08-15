@@ -1,6 +1,9 @@
 #pragma once
 
-#include "graph/nodeRegistry.hpp"
+#include "graph/schemaRegistry.hpp"
 #include "graph/typeRegistry.hpp"
 
-void glslModuleInit(graph::TypeRegistry& typeRegistry, graph::NodeRegistry& nodeRegistry);
+namespace glsl {
+    void initModule(graph::TypeRegistry& typeRegistry, graph::SchemaRegistry& schemaRegistry);
+}
+

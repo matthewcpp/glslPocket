@@ -57,18 +57,29 @@ void JsonReader::parseFunctions() {
 
         for (const auto& node : nodes) {
             auto nodeName = node["name"].get<std::string>();
-            auto nodeType = node["type"].get<std::string>();
+            auto nodeSchema = node["schema"].get<std::string>();
             auto nodeFlags = node["flags"].get<uint32_t>();
 
-            auto* graphNode = userFunction->graph.createNode(nodeType);
+            auto* graphNode = userFunction->graph.createNode(nodeSchema);
             graphNode->setName(nodeName);
             graphNode->flags = nodeFlags;
 
             if (node.contains("properties")) {
-                const auto& properties = node["properties"];
+                const auto& jsonProperties = node["properties"];
+                for (const auto& graphNodeProp : graphNode->properties()) {
+                    std::visit([&graphNode, &graphNodeProp, &jsonProperties](auto&& arg){
+                        auto jsonProp = jsonProperties.find(graphNodeProp.name);
+                        if (jsonProp == jsonProperties.end()) {
+                            return;
+                        }
 
-                for (auto &[key, value]: properties.items()) {
-                    graphNode->setProperty(key, value.get<float>());
+                        using T = std::decay_t<decltype(arg)>;
+                        if constexpr (std::is_same_v<T, float>){
+                            graphNode->setProperty(graphNodeProp.name, jsonProp.value().get<float>());
+                        } else if constexpr (std::is_same_v<T, std::string>) {
+                            graphNode->setProperty(graphNodeProp.name, jsonProp.value().get<std::string>());
+                        }
+                    }, graphNodeProp.value);
                 }
             }
 

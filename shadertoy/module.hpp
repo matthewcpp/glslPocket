@@ -1,6 +1,8 @@
 #pragma once
 
-#include "graph/nodeRegistry.hpp"
 #include "graph/typeRegistry.hpp"
+#include "graph/schemaRegistry.hpp"
 
-void shadertoyModuleInit(graph::TypeRegistry& typeRegistry, graph::NodeRegistry& nodeRegistry);
+namespace shadertoy {
+    void initModule(graph::TypeRegistry& typeRegistry, graph::SchemaRegistry& schemaRegistry);
+}

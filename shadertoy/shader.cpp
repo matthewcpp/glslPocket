@@ -12,10 +12,10 @@ namespace shadertoy {
 
 
 Shader::Shader () 
-    : _nodeRegistry(_typeRegistry), program(_typeRegistry, _nodeRegistry)
+    : program(_typeRegistry, _schemaRegistry)
 {
-    glslModuleInit(_typeRegistry, _nodeRegistry);
-    shadertoyModuleInit(_typeRegistry, _nodeRegistry);
+    glsl::initModule(_typeRegistry, _schemaRegistry);
+    shadertoy::initModule(_typeRegistry, _schemaRegistry);
 }
 
 void Shader::createNew() {

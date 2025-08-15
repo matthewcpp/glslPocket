@@ -1,22 +1,23 @@
 #pragma once
 
-#include "connection.hpp"
-#include "node.hpp"
-#include "nodeRegistry.hpp"
+#include "graph/connection.hpp"
+#include "graph/node.hpp"
+#include "graph/schemaRegistry.hpp"
 
 #include <functional>
 #include <memory>
 #include <vector>
+#include <unordered_map>
 
 namespace graph {
 
 class Graph{
 public:
-    Graph(NodeRegistry& nodeRegistry) : _nodeRegistry(nodeRegistry) {}
+    Graph(SchemaRegistry& schemaRegistry) : _schemaRegistry(schemaRegistry) {}
 
 public:
     Node* createNode(const std::string& nodeType);
-    Node* createNodeForType(const std::string& typeName);
+    Node* createNodeForType(const Type* type);
 
     using NodeItrFunc = std::function<void(const Node*)>;
     void iterateNodes(NodeItrFunc func) const;
@@ -26,14 +27,21 @@ public:
 
     Node* findNodeByName(const std::string& name);
 
-    Connection* connect(Node* fromNode, size_t fromPortIndex, Node* toNode, size_t toPortIndex);
+    const Connection* connect(Node* fromNode, size_t fromPortIndex, Node* toNode, size_t toPortIndex);
+    const Connection* connect(NodeUniqueId fromNode, size_t fromPortIndex, NodeUniqueId toNode, size_t toPortIndex);
+
+private:
+    Node* createNodeWithSchema(const Schema* schema);
 
 private:
     std::vector<std::unique_ptr<Node>> _nodes;
+    std::unordered_map<NodeUniqueId, Node*> _nodesById;
     std::vector<std::unique_ptr<Connection>> _connections;
+    std::unordered_map<ConnectionUniqueId, Connection*> _connectionsById;
 
-    NodeRegistry& _nodeRegistry;
-    NodeUniqueId _nextUniqueId = 0;
+    SchemaRegistry& _schemaRegistry;
+    NodeUniqueId _nextNodeUniqueId = 0;
+    ConnectionUniqueId _nextConnectionUniqueId = 0;
 };
 
 }

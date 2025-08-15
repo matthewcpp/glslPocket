@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graph/nodeRegistry.hpp"
+#include "graph/schemaRegistry.hpp"
 #include "graph/program.hpp"
 #include "graph/typeRegistry.hpp"
 
@@ -17,7 +17,7 @@ public:
     std::string compile();
 private:
     graph::TypeRegistry _typeRegistry;
-    graph::NodeRegistry _nodeRegistry;
+    graph::SchemaRegistry _schemaRegistry;
 
 public:
     graph::Program program;

@@ -1,13 +1,20 @@
 set(graphdev_source_files
     connection.hpp
-    exitNode.hpp exitNode.cpp
     graph.hpp graph.cpp
     node.hpp
-    nodeRegistry.hpp nodeRegistry.cpp
     program.hpp program.cpp
+    
+    schemaRegistry.hpp schemaRegistry.cpp
     typeRegistry.hpp typeRegistry.cpp
     userFunction.hpp userFunction.cpp
     type.hpp
+
+    schema.hpp schema.cpp
+    attribute.hpp
+    function.hpp
+    operator.hpp
+    struct.hpp
+    value.hpp
 
     jsonReader.hpp jsonReader.cpp
     jsonWriter.hpp jsonWriter.cpp

@@ -1,15 +1,9 @@
 #include "glsl/compiler.hpp"
 
 #include "graph/nodeId.hpp"
-#include "graph/exitNode.hpp"
+#include "graph/struct.hpp"
 
 #include "glsl/flags.hpp"
-#include "glsl/nodeId.hpp"
-#include "glsl/float.hpp"
-#include "glsl/vec.hpp"
-#include "glsl/builtin.hpp"
-#include "glsl/operator.hpp"
-#include "glsl/swizzle.hpp"
 
 namespace glsl {
 
@@ -56,7 +50,9 @@ void Compiler::_parseUserFunc(const graph::UserFunction* func) {
 
     _text << ") {" << std::endl;
 
-    _parseNode(func->exitNode);
+    if (func->exitNode) {
+        _parseNode(func->exitNode);
+    }
 
     _text << "}";
 }
@@ -69,27 +65,60 @@ void Compiler::_parseNode(const graph::Node* node) {
     }
 
     switch (node->typeId()) {
-        case graph::GraphdevNodeId::GraphdevNodeExit:
-            _parseNode(dynamic_cast<const graph::ExitNode*>(node)->targetNode);
-            break;
-        case glsl::GlslNodeId::GlslNodeFloat:
-            _parseFloat(dynamic_cast<const glsl::Float*>(node));
-            break;
-        case glsl::GlslNodeId::GlslNodeVec:
-            _parseVec(dynamic_cast<const glsl::Vec*>(node));
-            break;
-        case glsl::GlslNodeId::GlslNodeBuiltin:
-            _parseBuiltin(dynamic_cast<const glsl::Builtin*>(node));
-            break;
-        case glsl::GlslNodeId::GlslNodeOperator:
-            _parseOperator(dynamic_cast<const glsl::Operator*>(node));
-            break;
-        case glsl::GlslNodeId::GlslNodeSwizzle:
-            _parseSwizzle(dynamic_cast<const glsl::Swizzle*>(node));
-            break;
+        case graph::GraphdevNodeStruct:
+        _parseStruct(node);
+        break;
     }
 }
 
+void Compiler::_parseStruct(const graph::Node* node) {
+    const auto* in_connection = node->inputs()[0].connection;
+    const bool nodeDefinedInScope = node->flags & graph::NodeFlags::NodeFlagDefinedInScope;
+    const std::string typeName = graph::StructNode(node).getTypeName();
+
+    if (in_connection) {
+        // if the node is defined in this scope then we want to assign it;
+        if (nodeDefinedInScope) {
+            _text << node->name() << " = " << _nodeText[in_connection->fromNode] << ';' << std::endl;
+            _nodeText[node] = node->name();
+        } else { // we need to define a new variable and assign
+            std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
+            _text << typeName << ' ' << nodeName << " = " << _nodeText[in_connection->fromNode] << std::endl;
+            _nodeText[node] = nodeName;
+        }
+    } else { // this is a leaf node and we simply want to output its values
+        if (nodeDefinedInScope) {
+            _nodeText[node] = node->name();
+        } else {
+            std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
+            _text << typeName << ' ' << nodeName << " = " << typeName << '(';
+            size_t propIndex = 0;
+            for (const auto& property : node->properties()) {
+                // filter out properties that do not belong to this struct
+                if (property.name.find("::") != std::string::npos) {
+                    continue;
+                }
+
+                if (propIndex > 0) {
+                    _text << ", ";
+                }
+
+                std::visit([this](auto&& arg){
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, float>){
+                        _text << arg;
+                    }
+                }, property.value);
+                
+                propIndex += 1;
+            }
+            _text << ");" << std::endl;
+            _nodeText[node] = nodeName;
+        }
+    }
+}
+
+#if 0
 void Compiler::_parseFloat(const glsl::Float* node) {
     const auto* connection = node->inputs()[0].connection;
 
@@ -187,5 +216,6 @@ void Compiler::_parseSwizzle(const glsl::Swizzle* node) {
 
     _nodeText[node] = std::move(swizzleText);
 }
+#endif
 
 }

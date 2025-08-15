@@ -42,21 +42,39 @@ bool JsonWriter::write(const Program& program, const std::filesystem::path path,
             json& nodeJson = userFuncNodes.emplace_back(json::object());
 
             nodeJson["name"] = n->name();
-            nodeJson["type"] = n->typeId();
+            nodeJson["schema"] = n->schema()->name();
             nodeJson["flags"] = n->flags;
 
             
             const auto& nodeProperties = n->properties();
+            const auto& schemaProperties = n->schema()->properties();
             if (nodeProperties.empty()) {
                 return;
             }
 
             json nodeJsonProps = json::object();
-            for (const auto& property : nodeProperties) {
-                nodeJsonProps[property.name] = std::get<float>(property.value);
+            for (size_t i = 0; i < nodeProperties.size(); i++) {
+                const auto& property = nodeProperties[i];
+
+                // filter out properties that have their default value.
+                if (property == schemaProperties[i]) {
+                    continue;
+                }
+
+                std::visit([&property, &nodeJsonProps](auto&& arg){
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, float>){
+                        nodeJsonProps[property.name] = std::get<float>(property.value);
+                    } else if constexpr (std::is_same_v<T, std::string>) {
+                        nodeJsonProps[property.name] = std::get<std::string>(property.value);
+                    }
+                }, property.value);
+                
             }
 
-            nodeJson["properties"] = nodeJsonProps;
+            if (!nodeJsonProps.empty()) {
+                nodeJson["properties"] = nodeJsonProps;
+            }
         });
 
         userFuncJson["nodes"] = userFuncNodes;
