@@ -1,5 +1,6 @@
 set(shadertoy_source_files
     module.hpp module.cpp
+    nodeFactory.hpp nodeFactory.cpp
     shader.hpp shader.cpp
 )
 

@@ -11,6 +11,10 @@ class Struct : public Schema {
 public:
     Struct(const Type* type, const std::string& name) : Schema(name, GraphdevNodeStruct), _type(type) {
         addProperty("struct::type", type->name());
+        
+        // temp for now. in the future maybe we need to have inputs for each property?
+        addInput("in", nullptr);
+        addOutput("out", nullptr);
     }
 
     const Type* type() const { return _type; }

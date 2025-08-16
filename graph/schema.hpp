@@ -20,12 +20,18 @@ public:
     const std::vector<Property>& properties() const {return _properties; }
 
     bool addProperty(const std::string& name, const Property::ValueType& value);
+    bool addInput(const std::string& name, const Type* type);
+    bool addOutput(const std::string& name, const Type* type);
     bool apply(Node* node) const;
 
 private:
     std::string _name;
     uint32_t _nodeTypeId;
     std::vector<Property> _properties;
+
+    using PortInfo = std::pair<std::string, const Type*>;
+    std::vector<PortInfo> _inputs;
+    std::vector<PortInfo> _outputs;
 };
 
 }

@@ -8,6 +8,16 @@ bool Schema::addProperty(const std::string& name, const Property::ValueType& val
     return true;
 }
 
+bool Schema::addInput(const std::string& name, const Type* type) {
+    _inputs.emplace_back(name, type);
+    return true;
+}
+
+bool Schema::addOutput(const std::string& name, const Type* type){
+    _outputs.emplace_back(name, type);
+    return true;
+}
+
 bool Schema::apply(Node* node) const {
     // currently nodes can only have one schema
 
@@ -20,9 +30,13 @@ bool Schema::apply(Node* node) const {
         node->addProperty(prop.name, prop.value);
     }
 
-    // temp: need to figure this out more:
-    node->createInput("in", nullptr);
-    node->createOutput("out", nullptr);
+    for (const auto& input : _inputs) {
+        node->createInput(input.first, input.second);
+    }
+
+    for (const auto& output : _outputs) {
+        node->createOutput(output.first, output.second);
+    }
 
     node->_schema = this;
 

@@ -10,6 +10,9 @@ class Value : public Schema {
 public:
     Value() : Schema("graph::value", GraphdevNodeValue) {
         addProperty("value::value", Property::ValueType());
+
+        addInput("in", nullptr);
+        addOutput("out", nullptr);
     }
 
 };
