@@ -3,7 +3,7 @@ set (commands_sources
 
     command.hpp
     createConnection.hpp createConnection.cpp
-    createStructNode.hpp createStructNode.cpp
+    createNode.hpp createNode.cpp
     setProperty.hpp setProperty.cpp
 
     nodeConnections.hpp nodeConnections.cpp

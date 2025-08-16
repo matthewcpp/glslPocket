@@ -4,6 +4,7 @@ set(graphdev_source_files
     graph.hpp graph.cpp
     hooks.hpp
     node.hpp node.cpp
+    nodeFactory.hpp
     program.hpp program.cpp
     property.hpp property.cpp
     

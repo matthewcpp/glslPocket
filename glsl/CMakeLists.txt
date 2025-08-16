@@ -2,6 +2,7 @@ set(glsl_source_files
     compiler.hpp compiler.cpp
     flags.hpp
     module.hpp module.cpp
+    nodeFactory.hpp nodeFactory.cpp
 )
 
 add_library(glsl STATIC ${glsl_source_files})

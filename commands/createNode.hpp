@@ -2,14 +2,15 @@
 
 #include "commands/command.hpp"
 
+#include "graph/nodeFactory.hpp"
 #include "graph/userFunction.hpp"
 
 namespace command {
 
-class CreateStructNode : public Command {
+class CreateNode : public Command {
 public:
-    CreateStructNode(graph::UserFunction* userFunc, const std::string& schemaName, const std::string& nodeName)
-        :_userFunc(userFunc), _schemaName(schemaName), _nodeName(nodeName) {}
+    CreateNode(graph::UserFunction* userFunc, graph::NodeFactory& nodeFactory, const std::string& nodeType)
+        :_userFunc(userFunc), _nodeFactory(nodeFactory), _nodeType(nodeType) {}
 
     virtual bool execute() override;
     virtual void undo() override;
@@ -19,8 +20,8 @@ public:
 
 private:
     graph::UserFunction* _userFunc;
-    std::string _schemaName;
-    std::string _nodeName;
+    graph::NodeFactory& _nodeFactory;
+    std::string _nodeType;
 
     graph::NodeUniqueId _createdNodeId;
 };

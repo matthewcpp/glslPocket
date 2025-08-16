@@ -1,7 +1,9 @@
 
 #include "shadertoy/shader.hpp"
+#include "shadertoy/nodeFactory.hpp"
+
 #include "commands/commandProcessor.hpp"
-#include "commands/createStructNode.hpp"
+#include "commands/createNode.hpp"
 #include "commands/setProperty.hpp"
 #include "commands/createConnection.hpp"
 
@@ -30,6 +32,7 @@ void onConnectionDeleted(graph::Connection* connection) {
 
 int main(int argc, char** argv) {
     shadertoy::Shader shader;
+    shadertoy::NodeFactory nodeFactory;
 
     shader.program.hooks.nodeCreated.add(onNodeCreated);
     shader.program.hooks.nodeDeleted.add(onNodeDeleted);
@@ -39,10 +42,10 @@ int main(int argc, char** argv) {
     //shader.load("/Users/mlarocca/development/scratch/shadertoy_new.json");
 
     command::Processor commandProcessor;
-    commandProcessor.execute(new command::CreateStructNode(shader.mainImage, "glsl::vec4", "colorNode"));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "vec4"));
     commandProcessor.undo();
     commandProcessor.redo();
-    graph::Node* colorNode = shader.mainImage->graph.getNodeById(dynamic_cast<const command::CreateStructNode*>(commandProcessor.last())->createdNodeId());
+    graph::Node* colorNode = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
 
     commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "x", 0.1f));
     commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "y", 0.85f));
