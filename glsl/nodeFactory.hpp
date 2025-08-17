@@ -10,8 +10,6 @@ namespace glsl {
 
 class NodeFactory : public graph::NodeFactory {
 public:
-    virtual graph::Node* createResolutionNode(graph::Graph& graph, graph::NodeUniqueId nodeId) = 0;
-
     virtual graph::Node* createNode(graph::Graph& graph, const std::string& handle) override;
     virtual graph::Node* createNodeWithId(graph::Graph& graph, graph::NodeUniqueId nodeId, const std::string& handle) override;
 
