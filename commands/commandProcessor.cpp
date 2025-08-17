@@ -7,7 +7,7 @@ const Command* Processor::last() const {
         return nullptr;
     }
 
-    return _command_history[_command_index - 1];
+    return _command_history[_command_index - 1].get();
 }
 
 bool Processor::execute(Command* command) {
@@ -22,7 +22,7 @@ bool Processor::execute(Command* command) {
         _command_history.erase(_command_history.begin() + _command_index, _command_history.end());
     }
 
-    _command_history.push_back(command);
+    _command_history.emplace_back().reset(command);
     _command_index = _command_history.size();
 
     return true;

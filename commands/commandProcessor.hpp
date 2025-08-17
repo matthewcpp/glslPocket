@@ -2,6 +2,7 @@
 
 #include "commands/command.hpp"
 
+#include <memory>
 #include <vector>
 
 namespace command {
@@ -16,7 +17,7 @@ public:
     const Command* last() const;
 
 private:
-    std::vector<Command*> _command_history;
+    std::vector<std::unique_ptr<Command>> _command_history;
     size_t _command_index = 0;
 };
 
