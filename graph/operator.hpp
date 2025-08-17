@@ -13,6 +13,8 @@ public:
 
         addInput("a", nullptr);
         addInput("b", nullptr);
+
+        addOutput("out", nullptr);
     }
 };
 
@@ -22,11 +24,11 @@ public:
 
     bool isValid() const { return _node->typeId() == GraphdevNodeOperator; }
 
-    const void SetOperator(const std::string& op) {
+    const void setOperator(const std::string& op) {
         _node->setProperty("operator::op", op);
     }
 
-    const std::string GetOperator() const {
+    const std::string getOperator() const {
         const auto& prop = _node->getProperty("operator::op");
 
         return std::get<std::string>(prop.value);

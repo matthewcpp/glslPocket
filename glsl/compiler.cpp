@@ -3,6 +3,7 @@
 #include "graph/nodeId.hpp"
 #include "graph/attribute.hpp"
 #include "graph/struct.hpp"
+#include "graph/operator.hpp"
 
 #include "glsl/flags.hpp"
 
@@ -83,6 +84,10 @@ void Compiler::_parseNode(const graph::Node* node) {
         case graph::GraphdevNodeAttribute:
             _parseAttribute(node);
             break;
+
+        case graph::GraphdevNodeOperator:
+            _parseOperator(node);
+            break;
     }
 }
 
@@ -141,104 +146,20 @@ void Compiler::_parseAttribute(const graph::Node* node) {
     _nodeText[node] = _nodeText[in_connection->fromNode] + "." + attribute.getAttribute();
 }
 
-#if 0
-void Compiler::_parseFloat(const glsl::Float* node) {
-    const auto* connection = node->inputs()[0].connection;
+void Compiler::_parseOperator(const graph::Node* node) {
+    const graph::Node* operand_a = node->inputs()[0].connection->fromNode;
+    const graph::Node* operand_b = node->inputs()[1].connection->fromNode;
 
-    if (connection) { //declare variable?
-        _nodeText[node] = _nodeText[connection->fromNode];
-    } else {
+    graph::OperatorNode operatorNode(const_cast<graph::Node*>(node));
 
-        _nodeText[node] = std::to_string(std::get<float>(node->properties()[0].value));
-    }
-}
-
-void Compiler::_parseVec(const glsl::Vec* node) {
-    const auto* in_connection = node->inputs()[0].connection;
-    const bool nodeDefinedInScope = node->flags & graph::NodeFlags::NodeFlagDefinedInScope;
-
-    if (in_connection) {
-        // if the node is defined in this scope then we want to assign it;
-        if (nodeDefinedInScope) {
-            _text << node->name() << " = " << _nodeText[in_connection->fromNode] << ';' << std::endl;
-            _nodeText[node] = node->name();
-        } else { // we need to define a new variable and assign
-            std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
-            _text << "vec" << node->getSize() << ' ' << nodeName << " = " << _nodeText[in_connection->fromNode] << std::endl;
-            _nodeText[node] = nodeName;
-        }
-    } else { // this is a leaf node and we simply want to output its values
-        if (nodeDefinedInScope) {
-            _nodeText[node] = node->name();
-        } else {
-            std::string nodeName = node->name() + '_' + std::to_string(_identifier_counter++);
-            _text << "vec" << node->getSize() << ' ' << nodeName << " = vec" << node->getSize() << '(';
-            for (size_t i = 0; i < node->properties().size(); i++) {
-                const auto& property = node->properties()[i];
-                if (i > 0) {
-                    _text << ", ";
-                }
-
-                _text << std::get<float>(property.value);
-            }
-            _text << ");" << std::endl;
-            _nodeText[node] = nodeName;
-        }
-    }
-}
-
- void Compiler::_parseBuiltin(const glsl::Builtin* node) {
-    std::string functionText = node->functionName();
-    functionText.append("(");
-    for (size_t i = 0; i < node->inputs().size(); i++) {
-        const auto& input = node->inputs()[i];
-        if (i > 0) {
-            functionText.append(", ");
-        }
-
-        functionText.append(_nodeText[input.connection->fromNode]);
-    }
-    functionText.append(")");
-
-    _nodeText[node] = std::move(functionText);
- }
-
-void Compiler::_parseOperator(const glsl::Operator* node) {
-    std::string operatorText = _nodeText[node->inputs()[static_cast<uint32_t>(glsl::Operator::InputPortIndex::A)].connection->fromNode];
+    std::string operatorText = _nodeText[operand_a];
     operatorText.append(" ");
-    switch (node->type()) {
-        case glsl::Operator::Type::Add:
-            operatorText.append("+");
-            break;
-        case glsl::Operator::Type::Subtract:
-            operatorText.append("-");
-            break;
-        case glsl::Operator::Type::Multiply:
-            operatorText.append("*");
-            break;
-        case glsl::Operator::Type::Divide:
-            operatorText.append("/");
-            break;
-    }
+    operatorText.append(operatorNode.getOperator());
     operatorText.append(" ");
-    operatorText.append(_nodeText[node->inputs()[static_cast<uint32_t>(glsl::Operator::InputPortIndex::B)].connection->fromNode]);
+    operatorText.append(_nodeText[operand_b]);
 
     _nodeText[node] = std::move(operatorText);
 }
 
-void Compiler::_parseSwizzle(const glsl::Swizzle* node) {
-    const auto* in_connection = node->inputs()[0].connection;
-
-    if (in_connection) { // recursively satify all dependnecies of this node
-        _parseNode(in_connection->fromNode);
-    }
-
-    std::string swizzleText = _nodeText[in_connection->fromNode];
-    swizzleText.append(".");
-    swizzleText.append(node->mask());
-
-    _nodeText[node] = std::move(swizzleText);
-}
-#endif
 
 }

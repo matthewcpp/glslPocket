@@ -43,7 +43,9 @@ void initModule(graph::TypeRegistry& typeRegistry, graph::SchemaRegistry& schema
     schemaRegistry.addForType(vec3Type, vec3(vec3Type));
     schemaRegistry.addForType(vec4Type, vec4(vec4Type));
 
+    // TODO: should these ben enabled by default in schema registry itself?
     schemaRegistry.add(new graph::Attribute());
+    schemaRegistry.add(new graph::Operator());
 }
 
 }

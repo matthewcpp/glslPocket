@@ -28,6 +28,7 @@ private:
     void _parseNode(const graph::Node* node);
     void _parseStruct(const graph::Node* node);
     void _parseAttribute(const graph::Node* node);
+    void _parseOperator(const graph::Node* node);
 
 private:
     const graph::Program* _program;
