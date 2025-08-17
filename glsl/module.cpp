@@ -46,6 +46,7 @@ void initModule(graph::TypeRegistry& typeRegistry, graph::SchemaRegistry& schema
     // TODO: should these ben enabled by default in schema registry itself?
     schemaRegistry.add(new graph::Attribute());
     schemaRegistry.add(new graph::Operator());
+    schemaRegistry.add(new graph::Value());
 }
 
 }

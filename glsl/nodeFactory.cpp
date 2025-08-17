@@ -4,6 +4,7 @@
 #include "graph/node.hpp"
 #include "graph/attribute.hpp"
 #include "graph/operator.hpp"
+#include "graph/value.hpp"
 
 namespace glsl {
 
@@ -52,6 +53,14 @@ static inline graph::Node* _createOperatorNode(graph::Graph& graph, graph::NodeU
     return node;
 }
 
+static inline graph::Node* _createValueNode(graph::Graph& graph, graph::NodeUniqueId nodeId, const std::string& valueName, const graph::Property::ValueType& value) {
+    graph::Node* node = nodeId != 0 ? graph.createNodeWithId(nodeId, "graph::value", valueName) : graph.createNode("graph::value", valueName);
+    graph::ValueNode valueNode(node);
+    valueNode.setValue(value);
+
+    return node;
+}
+
 NodeFactory::NodeFactory() {
     _funcMap["vec2"] = [this](graph::Graph& graph, graph::NodeUniqueId nodeId){ return _createStructNode(graph, nodeId, "glsl::vec2", "vec2"); };
     _funcMap["vec3"] = [this](graph::Graph& graph, graph::NodeUniqueId nodeId){ return _createStructNode(graph, nodeId, "glsl::vec3", "vec3"); };
@@ -62,6 +71,8 @@ NodeFactory::NodeFactory() {
     _funcMap["subtract"] = [this](graph::Graph& graph, graph::NodeUniqueId nodeId){ return _createOperatorNode(graph, nodeId, "subtract", "-"); };
     _funcMap["multiply"] = [this](graph::Graph& graph, graph::NodeUniqueId nodeId){ return _createOperatorNode(graph, nodeId, "multiply", "*"); };
     _funcMap["divide"] = [this](graph::Graph& graph, graph::NodeUniqueId nodeId){ return _createOperatorNode(graph, nodeId, "divide", "/"); };
+
+    _funcMap["float"] = [this](graph::Graph& graph, graph::NodeUniqueId nodeId){ return _createValueNode(graph, nodeId, "float", 0.0f); };
 }
 
 }

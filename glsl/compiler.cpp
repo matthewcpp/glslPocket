@@ -4,6 +4,7 @@
 #include "graph/attribute.hpp"
 #include "graph/struct.hpp"
 #include "graph/operator.hpp"
+#include "graph/value.hpp"
 
 #include "glsl/flags.hpp"
 
@@ -88,6 +89,10 @@ void Compiler::_parseNode(const graph::Node* node) {
         case graph::GraphdevNodeOperator:
             _parseOperator(node);
             break;
+
+        case graph::GraphdevNodeValue:
+            _parseValue(node);
+            break;
     }
 }
 
@@ -159,6 +164,24 @@ void Compiler::_parseOperator(const graph::Node* node) {
     operatorText.append(_nodeText[operand_b]);
 
     _nodeText[node] = std::move(operatorText);
+}
+
+void Compiler::_parseValue(const graph::Node* node) {
+    const auto* in_connection = node->inputs()[0].connection;
+    graph::ValueNode valueNode(const_cast<graph::Node*>(node));
+
+    std::string valueStr = valueNode.getValueAsString();
+
+    if (in_connection) {
+        std::string varName = node->name();
+        varName.append("_").append(std::to_string(_identifier_counter++));
+
+        _text << valueNode.getTypeName() << ' ' << varName << " = " << valueStr << ";" << std::endl;
+        _nodeText[node] = varName;
+
+    } else {
+        _nodeText[node] = std::move(valueStr);
+    }
 }
 
 
