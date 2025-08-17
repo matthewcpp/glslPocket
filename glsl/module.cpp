@@ -43,6 +43,7 @@ void initModule(graph::TypeRegistry& typeRegistry, graph::SchemaRegistry& schema
     schemaRegistry.addForType(vec3Type, vec3(vec3Type));
     schemaRegistry.addForType(vec4Type, vec4(vec4Type));
 
+    schemaRegistry.add(new graph::Attribute());
 }
 
 }

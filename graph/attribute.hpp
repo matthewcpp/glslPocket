@@ -10,6 +10,9 @@ class Attribute : public Schema {
 public:
     Attribute() : Schema("graph::attribute", GraphdevNodeAttribute) {
         addProperty("attribute::name", std::string());
+
+        addInput("in", nullptr);
+        addOutput("out", nullptr);
     }
 
 };

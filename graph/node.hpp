@@ -22,7 +22,10 @@ enum NodeFlags {
 
     /** This node's name is defined in the current scope.
      *  An example of this would be a function parameter or global variable */
-    NodeFlagDefinedInScope = 1 << 0
+    NodeFlagDefinedInScope = 1 << 0,
+
+    /** This node's name is platform dependant */
+    PlatformDependant = 1 << 1
 };
 
 class Node {

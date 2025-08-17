@@ -1,11 +1,16 @@
 #include "glsl/compiler.hpp"
 
 #include "graph/nodeId.hpp"
+#include "graph/attribute.hpp"
 #include "graph/struct.hpp"
 
 #include "glsl/flags.hpp"
 
 namespace glsl {
+
+void Compiler::setPlatformLookup(const std::string& genericName, const std::string& platformName) {
+    _platformLookups[genericName] = platformName;
+}
 
 std::string Compiler::compile(const graph::Program& program, const std::string& entryPoint) {
     _identifier_counter = 0;
@@ -64,10 +69,20 @@ void Compiler::_parseNode(const graph::Node* node) {
         }
     }
 
+    if (node->flags & graph::NodeFlags::PlatformDependant) {
+        // todo: if not present throw exception
+        _nodeText[node] = _platformLookups[node->name()];
+        return;
+    }
+
     switch (node->typeId()) {
         case graph::GraphdevNodeStruct:
-        _parseStruct(node);
-        break;
+            _parseStruct(node);
+            break;
+
+        case graph::GraphdevNodeAttribute:
+            _parseAttribute(node);
+            break;
     }
 }
 
@@ -116,6 +131,14 @@ void Compiler::_parseStruct(const graph::Node* node) {
             _nodeText[node] = nodeName;
         }
     }
+}
+
+void Compiler::_parseAttribute(const graph::Node* node) {
+    graph::AttributeNode attribute(const_cast<graph::Node*>(node));
+
+    const auto* in_connection = node->inputs()[0].connection;
+
+    _nodeText[node] = _nodeText[in_connection->fromNode] + "." + attribute.getAttribute();
 }
 
 #if 0

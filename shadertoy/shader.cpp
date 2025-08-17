@@ -6,7 +6,6 @@
 #include "glsl/compiler.hpp"
 #include "glsl/flags.hpp"
 #include "glsl/module.hpp"
-#include "shadertoy/module.hpp"
 
 namespace shadertoy {
 
@@ -15,7 +14,6 @@ Shader::Shader ()
     : program(_typeRegistry, _schemaRegistry)
 {
     glsl::initModule(_typeRegistry, _schemaRegistry);
-    shadertoy::initModule(_typeRegistry, _schemaRegistry);
 }
 
 void Shader::createNew() {
@@ -40,6 +38,7 @@ bool Shader::write(const std::string& path) {
 
 std::string Shader::compile() {
     glsl::Compiler compiler;
+    compiler.setPlatformLookup("glsl::resolution", "iResolution");
     return compiler.compile(program, "mainImage");
 }
 
