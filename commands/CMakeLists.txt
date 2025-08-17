@@ -4,6 +4,7 @@ set (commands_sources
     command.hpp
     createConnection.hpp createConnection.cpp
     createNode.hpp createNode.cpp
+    renameNode.hpp renameNode.cpp
     setProperty.hpp setProperty.cpp
 
     nodeConnections.hpp nodeConnections.cpp

@@ -4,6 +4,7 @@
 
 #include "commands/commandProcessor.hpp"
 #include "commands/createNode.hpp"
+#include "commands/renameNode.hpp"
 #include "commands/setProperty.hpp"
 #include "commands/createConnection.hpp"
 
@@ -46,6 +47,7 @@ int main(int argc, char** argv) {
     commandProcessor.undo();
     commandProcessor.redo();
     graph::Node* colorNode = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::RenameNode(shader.mainImage, colorNode, "color"));
 
     commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "x", 0.1f));
     commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "y", 0.85f));
