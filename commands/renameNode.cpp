@@ -9,7 +9,7 @@ RenameNode::RenameNode(graph::UserFunction* userFunc, graph::Node* node, const s
 bool RenameNode::execute() {
     graph::Node* node = _userFunc->graph.getNodeById(_nodeId);
 
-    if (node->flags | (graph::NodeFlags::PlatformDependant | graph::NodeFlags::PlatformDependant)) {
+    if (node->flags & (graph::NodeFlags::PlatformDependant | graph::NodeFlags::PlatformDependant)) {
         return false;
     }
 

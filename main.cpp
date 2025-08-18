@@ -1,6 +1,6 @@
 
 #include "shadertoy/shader.hpp"
-#include "shadertoy/nodeFactory.hpp"
+#include "glsl/nodeFactory.hpp"
 
 #include "commands/commandProcessor.hpp"
 #include "commands/createNode.hpp"
@@ -33,7 +33,7 @@ void onConnectionDeleted(graph::Connection* connection) {
 
 int main(int argc, char** argv) {
     shadertoy::Shader shader;
-    shadertoy::NodeFactory nodeFactory;
+    glsl::NodeFactory nodeFactory;
 
     shader.program.hooks.nodeCreated.add(onNodeCreated);
     shader.program.hooks.nodeDeleted.add(onNodeDeleted);
@@ -43,53 +43,70 @@ int main(int argc, char** argv) {
     //shader.load("/Users/mlarocca/development/scratch/shadertoy_new.json");
 
     command::Processor commandProcessor;
-    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "vec4"));
-    commandProcessor.undo();
-    commandProcessor.redo();
-    graph::Node* colorNode = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
-    commandProcessor.execute(new command::RenameNode(shader.mainImage, colorNode, "color"));
-
-    commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "x", 0.1f));
-    commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "y", 0.85f));
-    commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "z", 0.1f));
-    commandProcessor.execute(new command::SetProperty(shader.mainImage, colorNode, "w", 1.0f));
     
     auto* fragColorNode = shader.mainImage->graph.findNodeByName("fragColor");
-    commandProcessor.execute(new command::CreateConnection(shader.mainImage, colorNode, 0, fragColorNode, 0));
+    auto* fragCoordNode = shader.mainImage->graph.findNodeByName("fragCoord");
 
-    /*
-    graph::Graph& graph = shader.mainImage->graph;
+    // Normalized pixel coordinates (from 0 to 1)
+    // vec2 uv = fragCoord/iResolution.xy;
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "resolution"));
+    graph::Node* resolution = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "swizzle"));
+    graph::Node* swizzle = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::SetProperty(shader.mainImage, swizzle, "attribute::name", "xy"));
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, resolution, 0, swizzle, 0));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "divide"));
+    graph::Node* divide = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, fragCoordNode, 0, divide, 0));
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, swizzle, 0, divide, 1));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "vec2"));
+    graph::Node* uv = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::RenameNode(shader.mainImage, uv, "uv"));
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, divide, 0, uv, 0));
+    
 
-    auto* colorNode = dynamic_cast<glsl::Vec*>(graph.createNode("glsl::vec4"));
-    colorNode->setProperty("x", 0.1f);
-    colorNode->setProperty("y", 0.85f);
-    colorNode->setProperty("z", 0.1f);
-    colorNode->setProperty("w", 1.0f);
-    auto* fragColorNode = graph.findNodeByName("fragColor");
-    graph.connect(colorNode, 0, fragColorNode, 0);
-    std::cout << shader.compile() << std::endl;
+    // Time varying pixel color
+    // vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "vec3"));
+    graph::Node* vec3 = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::SetProperty(shader.mainImage, vec3, "y", 2.0f));
+    commandProcessor.execute(new command::SetProperty(shader.mainImage, vec3, "z", 2.0f));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "swizzle"));
+    swizzle = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::SetProperty(shader.mainImage, swizzle, "attribute::name", "xyx"));
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, uv, 0, swizzle, 0));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "add"));
+    graph::Node* add = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, swizzle, 0, add, 0));
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, vec3, 0, add, 1));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "time"));
+    graph::Node* time = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "add"));
+    graph::Node* add2 = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, time, 0, add2, 0));
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, add, 0, add2, 1));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "cos"));
+    graph::Node* cosNode = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, add2, 0, cosNode, 0));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "float"));
+    graph::Node* floatNode = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::SetProperty(shader.mainImage, floatNode, "value::value", 0.5f));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "multiply"));
+    graph::Node* multiply = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, floatNode, 0, multiply, 0));
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, cosNode, 0, multiply, 1));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "add"));
+    graph::Node* add3 = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, floatNode, 0, add3, 0));
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, multiply, 0, add3, 1));
+    commandProcessor.execute(new command::CreateNode(shader.mainImage, nodeFactory, "vec3"));
+    graph::Node* col = shader.mainImage->graph.getNodeById(nodeFactory.lastCreatedId());
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, add3, 0, col, 0));
+    commandProcessor.execute(new command::CreateConnection(shader.mainImage, col, 0, fragColorNode, 0));
 
-    return 0;
+    // Output to screen
+    // fragColor = vec4(col,1.0);
 
-    auto* resolutionNode = dynamic_cast<glsl::Vec*>(graph.createNode("shadertoy::iResolution"));
-    auto* swizzleNode = dynamic_cast<glsl::Swizzle*>(graph.createNode("glsl::swizzle"));
-    glsl::SwizzleEditor swizzleEditor(swizzleNode, graph);
-    swizzleEditor.setMask("xy");
-    graph.connect(resolutionNode, 0, swizzleNode, 0);
-
-    auto* fragCoordNode = graph.findNodeByName("fragCoord");
-    auto* divideNode = dynamic_cast<glsl::Operator*>(graph.createNode("glsl::divide"));
-    graph.connect(fragCoordNode, 0, divideNode, static_cast<uint32_t>(glsl::Operator::InputPortIndex::A));
-    graph.connect(swizzleNode, 0, divideNode, static_cast<uint32_t>(glsl::Operator::InputPortIndex::B));
-    auto* uvNode = dynamic_cast<glsl::Vec*>(graph.createNode("glsl::vec2"));
-    graph.connect(divideNode, 0, uvNode, 0);
-
-    auto cosNode = dynamic_cast<glsl::Builtin*>(graph.createNode("glsl::cos"));
-    graph.connect(uvNode, 0, cosNode, 0);
-    graph.connect(cosNode, 0, fragColorNode, 0);
-
-    // graph.connect(uvNode, 0, fragColorNode, 0);
-    */
     
     std::cout << shader.compile() << std::endl;
     shader.write("/Users/mlarocca/development/scratch/shadertoy_new_out.json");

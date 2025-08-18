@@ -68,6 +68,13 @@ public:
 
     uint32_t flags = NodeFlags::NodeFlagNone;
 
+    void createInput(const std::string& name, const Type* type) {
+        _inputs.emplace_back(name, type);
+    }
+    void createOutput(const std::string& name, const Type* type) {
+        _outputs.emplace_back(name, type);
+    }
+
 private:
 
     friend class Schema;
@@ -76,13 +83,6 @@ private:
     bool addProperty(const std::string& name, const Property::ValueType& value) {
         _properties.emplace_back(name, value);
         return true;
-    }
-
-    void createInput(const std::string& name, const Type* type) {
-        _inputs.emplace_back(name, type);
-    }
-    void createOutput(const std::string& name, const Type* type) {
-        _outputs.emplace_back(name, type);
     }
 
 private:

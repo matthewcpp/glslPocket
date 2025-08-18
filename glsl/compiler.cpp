@@ -2,6 +2,7 @@
 
 #include "graph/nodeId.hpp"
 #include "graph/attribute.hpp"
+#include "graph/function.hpp"
 #include "graph/struct.hpp"
 #include "graph/operator.hpp"
 #include "graph/value.hpp"
@@ -65,6 +66,10 @@ void Compiler::_parseUserFunc(const graph::UserFunction* func) {
 }
 
 void Compiler::_parseNode(const graph::Node* node) {
+    if (_nodeText.count(node)) {
+        return;
+    }
+
     for (const auto& input : node->inputs()) {
         if (input.connection) {
             _parseNode(input.connection->fromNode);
@@ -92,6 +97,10 @@ void Compiler::_parseNode(const graph::Node* node) {
 
         case graph::GraphdevNodeValue:
             _parseValue(node);
+            break;
+
+        case graph::GraphdevNodeFunction:
+            _parseFunction(node);
             break;
     }
 }
@@ -182,6 +191,26 @@ void Compiler::_parseValue(const graph::Node* node) {
     } else {
         _nodeText[node] = std::move(valueStr);
     }
+}
+
+void Compiler::_parseFunction(const graph::Node* node) {
+    graph::FunctionNode functionNode(const_cast<graph::Node*>(node));
+
+    std::string funcText = functionNode.getFunctionName();
+    funcText.append("(");
+
+    const auto& inputs = node->inputs();
+    for (size_t i = 0; i < inputs.size(); i++) {
+        if (i > 0) {
+            funcText.append(", ");
+        }
+
+        funcText.append(_nodeText[inputs[i].connection->fromNode]);
+    }
+
+    funcText.append(")");
+
+    _nodeText[node] = funcText;
 }
 
 

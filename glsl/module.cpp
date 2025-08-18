@@ -47,6 +47,7 @@ void initModule(graph::TypeRegistry& typeRegistry, graph::SchemaRegistry& schema
     schemaRegistry.add(new graph::Attribute());
     schemaRegistry.add(new graph::Operator());
     schemaRegistry.add(new graph::Value());
+    schemaRegistry.add(new graph::Function());
 }
 
 }

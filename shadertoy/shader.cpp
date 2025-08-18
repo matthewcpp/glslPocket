@@ -39,6 +39,7 @@ bool Shader::write(const std::string& path) {
 std::string Shader::compile() {
     glsl::Compiler compiler;
     compiler.setPlatformLookup("glsl::resolution", "iResolution");
+    compiler.setPlatformLookup("glsl::time", "iTime");
     return compiler.compile(program, "mainImage");
 }
 

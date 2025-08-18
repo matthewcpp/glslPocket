@@ -30,6 +30,7 @@ private:
     void _parseAttribute(const graph::Node* node);
     void _parseOperator(const graph::Node* node);
     void _parseValue(const graph::Node* node);
+    void _parseFunction(const graph::Node* node);
 
 private:
     const graph::Program* _program;
